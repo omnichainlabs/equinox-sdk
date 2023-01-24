@@ -12,7 +12,7 @@ const NUM_SCAN_PAGES = 10
 export async function getAllContracts (ownerAddress: Address, user: UserProps): Promise<Contract[]> {
   let contracts: Contract[] = []
   try {
-    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/contracts/${user.email}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts/${user.email}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -22,7 +22,7 @@ export async function getAllContracts (ownerAddress: Address, user: UserProps): 
     if (contracts.length === 0) {
       contracts = await fetchAllContracts(ownerAddress)
       for (const contract of contracts) {
-        await fetch(`${process.env.BEANSTALK_SERVER_URL}/contracts`, {
+        await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts`, {
           method: 'POST',
           mode: 'cors',
           body: JSON.stringify(contract),
