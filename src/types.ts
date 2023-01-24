@@ -26,8 +26,26 @@ export interface ScanInfo {
 }
 
 export interface ScanContract {
-  address: Address
-  network: Network
+  contractAddress: string
+  from: string
+  to: string
+  blockNumber: string
+  timeStamp: string
+  blockHash: string
+  confirmations: string
+  cumulativeGasUsed: string
+  functionName: string
+  gas: string
+  gasPrice: string
+  gasUsed: string
+  hash: string
+  input: string
+  isError: string
+  methodId: string
+  nonce: string
+  transactionIndex: string
+  txreceipt_status: string
+  value: string
 }
 
 export interface Contract {
