@@ -3,12 +3,44 @@ import {
   Address,
   Contract,
   Network,
-  ScanContract
+  ScanContract,
+  UserProps
 } from '../types.js'
 
 const NUM_SCAN_PAGES = 10
 
-export async function fetchAllContracts (ownerAddress: Address): Promise<Contract[]> {
+export async function getAllContracts (ownerAddress: Address, user: UserProps): Promise<Contract[]> {
+  let contracts: Contract[] = []
+  try {
+    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/contracts/${user.email}`, {
+      headers: {
+        'x-api-key': user.apikey,
+        'x-user-id': user.email
+      }
+    })
+    contracts = await response.json()
+    if (contracts.length === 0) {
+      contracts = await fetchAllContracts(ownerAddress)
+      for (const contract of contracts) {
+        await fetch(`${process.env.BEANSTALK_SERVER_URL}/contracts`, {
+          method: 'POST',
+          mode: 'cors',
+          body: JSON.stringify(contract),
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': user.apikey,
+            'x-user-id': user.email
+          }
+        })
+      }
+    }
+  } catch (err) {
+    console.error(err)
+  }
+  return contracts
+}
+
+async function fetchAllContracts (ownerAddress: Address): Promise<Contract[]> {
   const contracts: Contract[] = []
   const scanContracts: ScanContract[] = await getAllScanContracts(ownerAddress)
   for await (const scanContract of scanContracts) {
@@ -33,11 +65,11 @@ async function getAllScanContracts (ownerAddress: Address): Promise<ScanContract
             `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlist&address=${ownerAddress}&startblock=0&endblock=99999999&page=${page}&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
           )
           const contracts = await res.json()
-          if (!contracts || !contracts.result || typeof contracts.result !== typeof [] || contracts.result.length === 0) {
+          if (typeof contracts?.result !== typeof [] || contracts?.result?.length === 0) {
             break
           }
           contracts.result.forEach((contract: any) => {
-            if (contract.contractAddress && contract.contractAddress !== '') {
+            if (contract.contractAddress !== '') {
               scanContracts.push({
                 address: contract.contractAddress.toString(),
                 network
@@ -53,7 +85,7 @@ async function getAllScanContracts (ownerAddress: Address): Promise<ScanContract
   return scanContracts
 }
 
-export async function fetchContractsFromScanContract (scanContract: ScanContract): Promise<Contract[]> {
+async function fetchContractsFromScanContract (scanContract: ScanContract): Promise<Contract[]> {
   const res = await fetch(
     `${SCAN_MAP[scanContract.network].apiUrl}/api?module=account&action=txlist&address=${scanContract.address
     }&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${SCAN_MAP[scanContract.network].apiKey}`

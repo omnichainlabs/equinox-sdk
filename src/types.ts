@@ -14,6 +14,11 @@ export enum Network {
   OptimismGoerli = 'optimism-goerli'
 }
 
+export interface UserProps {
+  email: string
+  apikey: string
+}
+
 export interface ScanInfo {
   apiUrl: string
   explorerUrl: string
