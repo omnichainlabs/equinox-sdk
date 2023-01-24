@@ -1,6 +1,6 @@
 {
   "name": "@equinoxapi/equinox-sdk",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Public SDK for the Equinox API",
   "main": "dist/index.js",
   "type": "module",
@@ -20,6 +20,7 @@
     "url": "https://github.com/omnichainlabs/equinox-sdk/issues"
   },
   "homepage": "https://github.com/omnichainlabs/equinox-sdk#readme",
+  "types": "dist/index.d.ts",
   "devDependencies": {
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
