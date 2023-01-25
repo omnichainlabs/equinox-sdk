@@ -8,6 +8,7 @@ import {
 } from '../types.js'
 
 const NUM_SCAN_PAGES = 10
+const RATE_LIMIT_INTERVAL_MS = 300
 
 export async function getAllContracts (ownerAddress: Address, user: UserProps): Promise<Contract[]> {
   let contracts: Contract[] = []
@@ -40,32 +41,49 @@ export async function getAllContracts (ownerAddress: Address, user: UserProps): 
   return contracts
 }
 
-async function fetchAllContracts (ownerAddress: Address): Promise<Contract[]> {
+async function fetchContractPage (ownerAddress: Address, network: Network, page: number): Promise<Contract[]> {
   const contracts: Contract[] = []
-  await Promise.all(
-    Object.values(Network).map(async (network: Network): Promise<void> => {
-      try {
-        for (let page = 1; page <= NUM_SCAN_PAGES; ++page) {
-          const res = await fetch(
-            `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlist&address=${ownerAddress}&startblock=0&endblock=99999999&page=${page}&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
-          )
-          const scanContracts = await res.json()
-          if (typeof scanContracts?.result !== typeof [] || scanContracts?.result?.length === 0) {
-            break
-          }
-          scanContracts.result.forEach((scanContract: ScanContract) => {
-            if (scanContract.contractAddress !== '') {
-              contracts.push(scanContractToContract(network, scanContract))
-            }
-          })
-          await new Promise((resolve) => setTimeout(resolve, 300)) // to avoid being rate limited
-        }
-      } catch (error) {
-        console.error(error)
+  const res = await fetch(
+    `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlist&address=${ownerAddress}&startblock=0&endblock=99999999&page=${page}&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
+  )
+  const scanContracts = await res.json()
+  if (typeof scanContracts?.result === typeof [] && scanContracts?.result?.length > 0) {
+    scanContracts.result.forEach((scanContract: ScanContract) => {
+      if (scanContract.contractAddress !== '') {
+        contracts.push(scanContractToContract(network, scanContract))
       }
     })
-  )
+  }
   return contracts
+}
+
+async function fetchContractNetwork (ownerAddress: Address, network: Network): Promise<Contract[]> {
+  const contracts: Contract[] = []
+  try {
+    for (let page = 1; page <= NUM_SCAN_PAGES; ++page) {
+      const newContracts = await fetchContractPage(ownerAddress, network, page)
+      contracts.push(...newContracts)
+      await new Promise((resolve) => setTimeout(resolve, RATE_LIMIT_INTERVAL_MS))
+    }
+  } catch (error) {
+    console.error(error)
+  }
+  return contracts
+}
+
+async function fetchAllContracts (ownerAddress: Address): Promise<Contract[]> {
+  return (await Promise.all(
+    Object.values(Network).map(async (network: Network): Promise<Contract[]> => await fetchContractNetwork(ownerAddress, network))
+  )).flat()
+}
+
+export async function fetchOneContract (ownerAddress: Address, network: Network, contractAddress: Address): Promise<Contract> {
+  const contracts = await fetchContractNetwork(ownerAddress, network)
+  const filteredContracts = contracts.filter((contract: Contract) => contract.ContractAddress === contractAddress)
+  if (filteredContracts.length === 0) {
+    throw new Error(`The address ${ownerAddress} has not deployed any contracts with address ${contractAddress} on ${network}!`)
+  }
+  return filteredContracts[0]
 }
 
 function scanContractToContract (Network: Network, scanContract: ScanContract): Contract {
