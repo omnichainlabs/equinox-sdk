@@ -47,7 +47,7 @@ async function fetchContractPage (ownerAddress: Address, network: Network, page:
     `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlist&address=${ownerAddress}&startblock=0&endblock=99999999&page=${page}&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
   )
   const scanContracts = await res.json()
-  if (typeof scanContracts?.result === typeof [] && scanContracts?.result?.length > 0) {
+  if (typeof scanContracts?.result === typeof []) {
     scanContracts.result.forEach((scanContract: ScanContract) => {
       if (scanContract.contractAddress !== '') {
         contracts.push(scanContractToContract(network, scanContract))
