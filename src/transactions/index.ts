@@ -1,3 +1,5 @@
+import { normalize } from 'path'
+
 import { SCAN_MAP } from '../constants.js'
 import {
   Address,
@@ -6,11 +8,12 @@ import {
   Transaction,
   UserProps
 } from '../types.js'
+import { normalizeAddress } from '../utils.js'
 
 const NUM_SCAN_PAGES = 10
 const RATE_LIMIT_INTERVAL_MS = 300
 
-export async function getAllTransactions (ownerAddress: Address, user: UserProps): Promise<Transaction[]> {
+export async function getAllTransactions (ownerAddress: Address, user: UserProps, contractsOnly: boolean, transactionsOnly: boolean): Promise<Transaction[]> {
   let transactions: Transaction[] = []
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${user.email}`, {
@@ -37,6 +40,13 @@ export async function getAllTransactions (ownerAddress: Address, user: UserProps
     }
   } catch (err) {
     console.error(err)
+  }
+
+  if (contractsOnly) {
+    return transactions.filter((transaction: Transaction) => transaction.ContractId)
+  }
+  if (transactionsOnly) {
+    return transactions.filter((transaction: Transaction) => transaction.ContractId === undefined)
   }
   return transactions
 }
@@ -66,7 +76,7 @@ async function fetchTransactionNetwork (ownerAddress: Address, network: Network)
   return transactions
 }
 
-export async function fetchAllTransactions (ownerAddress: Address): Promise<Transaction[]> {
+async function fetchAllTransactions (ownerAddress: Address): Promise<Transaction[]> {
   return (await Promise.all(
     Object.values(Network).map(async (network: Network): Promise<Transaction[]> => await fetchTransactionNetwork(ownerAddress, network))
   )).flat()
@@ -89,10 +99,10 @@ function scanTransactionToTransaction (Network: Network, scanTransaction: ScanTr
     BlockHash: scanTransaction.blockHash,
     BlockNumber: Number(scanTransaction.blockNumber),
     Confirmations: Number(scanTransaction.confirmations),
-    ContractAddress: scanTransaction.contractAddress?.toLowerCase().trim() ?? scanTransaction.to.toLowerCase().trim(),
-    ContractId: scanTransaction.contractAddress?.toLowerCase().trim(),
+    ContractAddress: normalizeAddress(scanTransaction.contractAddress) ?? normalize(scanTransaction.to),
+    ContractId: normalizeAddress(scanTransaction.contractAddress),
     CumulativeGasUsed: Number(scanTransaction.cumulativeGasUsed),
-    FromAddress: scanTransaction.from,
+    FromAddress: normalizeAddress(scanTransaction.from),
     FunctionName: scanTransaction.functionName,
     Gas: Number(scanTransaction.gas),
     GasPrice: Number(scanTransaction.gasPrice),
@@ -106,8 +116,8 @@ function scanTransactionToTransaction (Network: Network, scanTransaction: ScanTr
     ProjectId: 'My First Project',
     Timestamp: Number(scanTransaction.timeStamp),
     TransactionIndex: Number(scanTransaction.transactionIndex),
-    ToAddress: scanTransaction.to,
-    TxReceiptStatus: scanTransaction.txreceipt_status,
+    ToAddress: normalizeAddress(scanTransaction.to),
+    TxReceiptStatus: Number(scanTransaction.txreceipt_status),
     Value: scanTransaction.value
   }
 }

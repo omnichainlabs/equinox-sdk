@@ -14,11 +14,6 @@ export enum Network {
   OptimismGoerli = 'optimism-goerli'
 }
 
-export interface UserProps {
-  email: string
-  apikey: string
-}
-
 export interface ScanInfo {
   apiUrl: string
   explorerUrl: string
@@ -70,6 +65,16 @@ export interface Transaction {
   Timestamp: number
   ToAddress?: Address
   TransactionIndex?: number
-  TxReceiptStatus?: string
+  TxReceiptStatus?: TransactionStatus
   Value?: string
+}
+
+export enum TransactionStatus {
+  Failure = 0,
+  Success = 1,
+}
+
+export interface UserProps {
+  email: string
+  apikey: string
 }
