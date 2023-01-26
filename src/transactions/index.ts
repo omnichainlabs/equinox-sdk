@@ -46,6 +46,7 @@ export async function getAllTransactions ({
             'x-user-id': user.email
           }
         })
+        await new Promise((resolve) => setTimeout(resolve, RATE_LIMIT_INTERVAL_MS))
       }
     }
   } catch (err) {
@@ -61,7 +62,7 @@ export async function getAllTransactions ({
   return transactions
 }
 
-async function fetchTransactionPage (fromAddress: Address, network: Network, page: number): Promise<Transaction[]> {
+export async function fetchTransactionPage (fromAddress: Address, network: Network, page: number): Promise<Transaction[]> {
   const res = await fetch(
     `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlist&address=${fromAddress}&startblock=0&endblock=99999999&page=${page}&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
   )
@@ -72,7 +73,7 @@ async function fetchTransactionPage (fromAddress: Address, network: Network, pag
   return []
 }
 
-async function fetchTransactionNetwork (fromAddress: Address, network: Network): Promise<Transaction[]> {
+export async function fetchTransactionNetwork (fromAddress: Address, network: Network): Promise<Transaction[]> {
   const transactions: Transaction[] = []
   try {
     for (let page = 1; page <= NUM_SCAN_PAGES; ++page) {
@@ -86,7 +87,7 @@ async function fetchTransactionNetwork (fromAddress: Address, network: Network):
   return transactions
 }
 
-async function fetchAllTransactions (fromAddress: Address): Promise<Transaction[]> {
+export async function fetchAllTransactions (fromAddress: Address): Promise<Transaction[]> {
   return (await Promise.all(
     Object.values(Network).map(async (network: Network): Promise<Transaction[]> => await fetchTransactionNetwork(fromAddress, network))
   )).flat()
@@ -104,7 +105,7 @@ export async function fetchOneContract (fromAddress: Address, network: Network, 
   return filteredTransactions[0]
 }
 
-function scanTransactionToTransaction (Network: Network, scanTransaction: ScanTransaction): Transaction {
+export function scanTransactionToTransaction (Network: Network, scanTransaction: ScanTransaction): Transaction {
   return {
     BlockHash: scanTransaction.blockHash,
     BlockNumber: Number(scanTransaction.blockNumber),
