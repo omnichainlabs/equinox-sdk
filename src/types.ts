@@ -64,6 +64,7 @@ export interface Transaction {
   ProjectId: string
   Timestamp: number
   ToAddress?: Address
+  TransactionId: string
   TransactionIndex?: number
   TxReceiptStatus?: TransactionStatus
   Value?: string
