@@ -1,30 +1,5 @@
 export type Address = string
 
-export interface Contract {
-  ProjectId: string
-  ContractId: string
-  Network: Network
-  ContractAddress: Address
-  OwnerAddress: Address
-  BlockNumber: number
-  Timestamp: number
-  BlockHash?: string
-  Confirmations?: number
-  CumulativeGasUsed?: number
-  FunctionName?: string
-  Gas?: number
-  GasPrice?: number
-  GasUsed?: number
-  Hash?: string
-  Input?: string
-  IsError?: string
-  MethodId?: string
-  Nonce?: number
-  TransactionIndex?: number
-  TxReceiptStatus?: string
-  Value?: string
-}
-
 export enum Network {
   Ethereum = 'ethereum',
   Goerli = 'goerli',
@@ -50,38 +25,13 @@ export interface ScanInfo {
   apiKey: string
 }
 
-export interface ScanContract {
-  contractAddress: string
-  from: string
-  to: string
-  blockNumber: string
-  timeStamp: string
-  blockHash: string
-  confirmations: string
-  cumulativeGasUsed: string
-  functionName: string
-  gas: string
-  gasPrice: string
-  gasUsed: string
-  hash: string
-  input: string
-  isError: string
-  methodId: string
-  nonce: string
-  transactionIndex: string
-  txreceipt_status: string
-  value: string
-}
-
 export interface ScanTransaction {
-  contractAddress: string
-  from: string
-  to: string
-  blockNumber: string
-  timeStamp: string
   blockHash: string
+  blockNumber: string
   confirmations: string
+  contractAddress: string
   cumulativeGasUsed: string
+  from: string
   functionName: string
   gas: string
   gasPrice: string
@@ -91,22 +41,21 @@ export interface ScanTransaction {
   isError: string
   methodId: string
   nonce: string
+  timeStamp: string
+  to: string
   transactionIndex: string
   txreceipt_status: string
   value: string
 }
 
 export interface Transaction {
-  ProjectId: string
-  ContractId: string
-  Network: Network
-  ContractAddress: Address
-  OwnerAddress: Address
-  BlockNumber: number
-  Timestamp: number
   BlockHash?: string
+  BlockNumber: number
   Confirmations?: number
+  ContractAddress?: Address
+  ContractId?: string
   CumulativeGasUsed?: number
+  FromAddress: Address
   FunctionName?: string
   Gas?: number
   GasPrice?: number
@@ -115,7 +64,11 @@ export interface Transaction {
   Input?: string
   IsError?: string
   MethodId?: string
+  Network: Network
   Nonce?: number
+  ProjectId: string
+  Timestamp: number
+  ToAddress?: Address
   TransactionIndex?: number
   TxReceiptStatus?: string
   Value?: string

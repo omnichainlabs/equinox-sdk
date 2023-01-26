@@ -47,7 +47,6 @@ async function fetchTransactionPage (ownerAddress: Address, network: Network, pa
   )
   const scanTransactions = await res.json()
   if (typeof scanTransactions?.result === typeof []) {
-    console.log(scanTransactions.result)
     return scanTransactions.result.map((scanTransaction: ScanTransaction): Transaction => scanTransactionToTransaction(network, scanTransaction))
   }
   return []
@@ -73,27 +72,27 @@ export async function fetchAllTransactions (ownerAddress: Address): Promise<Tran
   )).flat()
 }
 
-export async function fetchOneTransaction (ownerAddress: Address, network: Network, contractAddress: Address): Promise<Transaction> {
+export async function fetchOneContract (ownerAddress: Address, network: Network, contractAddress: Address): Promise<Transaction> {
+  if (contractAddress === '') {
+    throw new Error('Please provide a non-empty contract address.')
+  }
   const transactions = await fetchTransactionNetwork(ownerAddress, network)
   const filteredTransactions = transactions.filter((transaction: Transaction) => transaction.ContractAddress === contractAddress)
   if (filteredTransactions.length === 0) {
-    throw new Error(`The address ${ownerAddress} has not deployed any transactions with address ${contractAddress} on ${network}!`)
+    throw new Error(`The address ${ownerAddress} has not deployed any contracts with address ${contractAddress} on ${network}!`)
   }
   return filteredTransactions[0]
 }
 
 function scanTransactionToTransaction (Network: Network, scanTransaction: ScanTransaction): Transaction {
   return {
-    ProjectId: 'My First Project',
-    ContractId: scanTransaction.contractAddress.toLowerCase().trim(),
-    Network,
-    ContractAddress: scanTransaction.contractAddress.toLowerCase().trim(),
-    OwnerAddress: scanTransaction.from,
-    BlockNumber: Number(scanTransaction.blockNumber),
-    Timestamp: Number(scanTransaction.timeStamp),
     BlockHash: scanTransaction.blockHash,
+    BlockNumber: Number(scanTransaction.blockNumber),
     Confirmations: Number(scanTransaction.confirmations),
+    ContractAddress: scanTransaction.contractAddress?.toLowerCase().trim() ?? scanTransaction.to.toLowerCase().trim(),
+    ContractId: scanTransaction.contractAddress?.toLowerCase().trim(),
     CumulativeGasUsed: Number(scanTransaction.cumulativeGasUsed),
+    FromAddress: scanTransaction.from,
     FunctionName: scanTransaction.functionName,
     Gas: Number(scanTransaction.gas),
     GasPrice: Number(scanTransaction.gasPrice),
@@ -102,8 +101,12 @@ function scanTransactionToTransaction (Network: Network, scanTransaction: ScanTr
     Input: scanTransaction.input,
     IsError: scanTransaction.isError,
     MethodId: scanTransaction.methodId,
+    Network,
     Nonce: Number(scanTransaction.nonce),
+    ProjectId: 'My First Project',
+    Timestamp: Number(scanTransaction.timeStamp),
     TransactionIndex: Number(scanTransaction.transactionIndex),
+    ToAddress: scanTransaction.to,
     TxReceiptStatus: scanTransaction.txreceipt_status,
     Value: scanTransaction.value
   }
