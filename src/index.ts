@@ -1,4 +1,5 @@
 export * from './constants.js'
+export * from './contracts/index.js'
 export * from './gates/index.js'
 export * from './projects/index.js'
 export * from './transactions/index.js'
