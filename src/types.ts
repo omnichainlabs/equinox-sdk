@@ -65,20 +65,20 @@ export interface ScanTransaction {
   blockHash: string
   blockNumber: string
   confirmations: string
-  contractAddress: string
+  contractAddress: Address
   cumulativeGasUsed: string
-  from: string
+  from: Address
   functionName: string
   gas: string
   gasPrice: string
   gasUsed: string
-  hash: string
+  hash: TransactionHash
   input: string
   isError: string
   methodId: string
   nonce: string
   timeStamp: string
-  to: string
+  to: Address
   transactionIndex: string
   txreceipt_status: string
   value: string
@@ -96,7 +96,7 @@ export interface Transaction {
   Gas?: number
   GasPrice?: number
   GasUsed?: number
-  Hash?: string
+  TransactionHash: TransactionHash
   Input?: string
   IsError?: string
   MethodId?: string
@@ -105,11 +105,12 @@ export interface Transaction {
   ProjectId: string
   Timestamp: number
   ToAddress?: Address
-  TransactionId: string
   TransactionIndex?: number
   TxReceiptStatus?: TransactionStatus
   Value?: string
 }
+
+export type TransactionHash = string
 
 export enum TransactionStatus {
   Failure = 0,
@@ -123,4 +124,9 @@ export interface UserProps {
   thumb: string
   role: string
   apikey: string
+}
+
+export interface Wallet {
+  ProjectId: string
+  WalletAddress: string
 }
