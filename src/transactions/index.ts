@@ -8,7 +8,7 @@ import {
   Transaction,
   UserProps
 } from '../types.js'
-import { normalizeAddress } from '../utils.js'
+import { normalizeAddress } from '../utils/index.js'
 
 const NUM_SCAN_PAGES = 10
 const RATE_LIMIT_INTERVAL_MS = 300

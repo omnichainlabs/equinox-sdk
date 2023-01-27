@@ -1,11 +1,13 @@
 import {
   Address,
   ISOString
-} from './types.js'
+} from '../types.js'
 
-const S_PER_DAY: number = 24 * 60 * 60
-const MS_PER_S: number = 1000
-const MS_PER_DAY: number = MS_PER_S * S_PER_DAY
+export * from './alchemy.js'
+
+export const S_PER_DAY: number = 24 * 60 * 60
+export const MS_PER_S: number = 1000
+export const MS_PER_DAY: number = MS_PER_S * S_PER_DAY
 
 export function abbreviateAddress (address: Address): string {
   return `${address.slice(0, 6)}..${address.slice(address.length - 4)}`
