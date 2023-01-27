@@ -5,7 +5,7 @@ import {
 
 let alchemySingleton: Alchemy
 
-const AlchemySingleton = (): Alchemy => {
+export const AlchemySingleton = (): Alchemy => {
   const alchemySettings = {
     apiKey: process.env.ALCHEMY_API_KEY,
     network: Network.MATIC_MUMBAI
@@ -15,5 +15,3 @@ const AlchemySingleton = (): Alchemy => {
   }
   return alchemySingleton
 }
-
-export default AlchemySingleton
