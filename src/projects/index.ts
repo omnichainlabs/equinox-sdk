@@ -3,7 +3,7 @@ import {
   UserProps
 } from '../types.js'
 
-export async function getAllProjects ({ user }: { user: UserProps }): Promise<Project[]> {
+export async function getAllProjects (user: UserProps): Promise<Project[]> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects`, {
       headers: {
@@ -19,13 +19,7 @@ export async function getAllProjects ({ user }: { user: UserProps }): Promise<Pr
   return []
 }
 
-export async function getProject ({
-  user,
-  ProjectId
-}: {
-  user: UserProps
-  ProjectId: string
-}): Promise<Project[]> {
+export async function getProject (user: UserProps, ProjectId: string): Promise<Project | undefined> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${ProjectId}`, {
       headers: {
@@ -38,26 +32,29 @@ export async function getProject ({
     console.error(`Error occurred when trying to GET /projects/${ProjectId}`)
     console.error(err)
   }
-  return []
 }
 
-export async function postProject ({
-  user,
-  ProjectId,
-  AdminUserIds
-}: {
-  user: UserProps
-  ProjectId: string
-  AdminUserIds: string[]
-}): Promise<void> {
+export async function deleteProject (user: UserProps, ProjectId: string): Promise<void> {
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${ProjectId}`, {
+      method: 'DELETE',
+      headers: {
+        'x-api-key': user.apikey,
+        'x-user-id': user.email
+      }
+    })
+  } catch (err) {
+    console.error(`Error occurred when trying to DELETE /projects/${ProjectId}`)
+    console.error(err)
+  }
+}
+
+export async function postProject (user: UserProps, project: Project): Promise<void> {
   try {
     await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects`, {
       method: 'POST',
       mode: 'cors',
-      body: JSON.stringify({
-        ProjectId,
-        AdminUserIds
-      }),
+      body: JSON.stringify(project),
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': user.apikey,
