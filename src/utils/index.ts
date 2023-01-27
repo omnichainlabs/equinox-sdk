@@ -1,6 +1,8 @@
+import { Network as EthersNetwork } from '@ethersproject/networks'
 import {
   Address,
-  ISOString
+  ISOString,
+  Network
 } from '../types.js'
 
 export * from './alchemy.js'
@@ -31,4 +33,33 @@ export function daysDeployedFromDate (date: Date): number {
 
 export async function sleep (intervalMs: number): Promise<void> {
   await new Promise((resolve: (value: null) => void) => setTimeout(resolve, intervalMs))
+}
+
+export function ethersNetworkToNetwork (network: EthersNetwork): Network {
+  switch (network.chainId) {
+    case 1:
+      return Network.Ethereum
+    case 5:
+      return Network.Goerli
+    case 10:
+      return Network.Optimism
+    case 137:
+      return Network.Polygon
+    case 28528:
+      return Network.OptimismGoerli
+    case 42161:
+      return Network.Arbitrum
+    case 43113:
+      return Network.Fuji
+    case 43114:
+      return Network.Avalanche
+    case 80001:
+      return Network.Mumbai
+    case 421613:
+      return Network.ArbitrumGoerli
+    case 11155111:
+      return Network.Sepolia
+    default:
+      return Network.Mumbai
+  }
 }
