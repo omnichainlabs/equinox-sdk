@@ -1,5 +1,37 @@
 export type Address = string
 
+export interface Apikey {
+  UserId: string
+  Label: string
+  Expiration: ISOString
+  Hash: string
+  CreatedAt: ISOString
+  TotalRequests: number
+  TotalTimeElapsed: number
+};
+
+export interface GateCollection {
+  ContractAddress: Address
+  ImageUrl: string
+  Name: string
+  OpenSeaSlug: string
+};
+
+export interface GateItem {
+  UserId: string
+  GateId: string
+  Content: string
+  MustHaveAll: boolean
+  Collections: GateCollection[]
+};
+
+export type ISOString = string
+
+export interface Project {
+  ProjectId: string
+  AdminUserIds: string[]
+}
+
 export enum Network {
   Ethereum = 'ethereum',
   Goerli = 'goerli',
@@ -13,6 +45,15 @@ export enum Network {
   Optimism = 'optimism',
   OptimismGoerli = 'optimism-goerli'
 }
+
+export interface NFTMetadata {
+  ContractId: string
+  Network: Network
+  Description: string
+  PrimaryPayoutAddress: Address
+  SecondaryPayoutAddress: Address
+  RoyaltyPercentage: number
+};
 
 export interface ScanInfo {
   apiUrl: string
@@ -76,6 +117,10 @@ export enum TransactionStatus {
 }
 
 export interface UserProps {
+  name: string
   email: string
+  avatar: string
+  thumb: string
+  role: string
   apikey: string
 }
