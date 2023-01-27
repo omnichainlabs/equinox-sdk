@@ -24,30 +24,23 @@ export async function getAllTransactions ({
   contractsOnly?: boolean
   transactionsOnly?: boolean
 }): Promise<Transaction[]> {
-  let transactions: Transaction[] = []
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${projectId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${projectId}?contractsOnly=${contractsOnly}&transactionsOnly=${transactionsOnly}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
       }
     })
-    transactions = await response.json()
+    return await response.json()
   } catch (err) {
     console.error(err)
   }
-  if (contractsOnly) {
-    return transactions.filter((transaction: Transaction) => transaction.ContractId)
-  }
-  if (transactionsOnly) {
-    return transactions.filter((transaction: Transaction) => transaction.ContractId === undefined)
-  }
-  return transactions
+  return []
 }
 
-export async function fetchBalanceByAddress (walletAddress: Address, network: Network): Promise<number> {
+export async function fetchBalanceByAddress (address: Address, network: Network): Promise<number> {
   const res = await fetch(
-    `${SCAN_MAP[network].apiUrl}/api?module=account&action=balance&address=${walletAddress}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
+    `${SCAN_MAP[network].apiUrl}/api?module=account&action=balance&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
   )
   const data = await res.json()
   const balance: number = Number((Number(data.result) / 1000000000000000000).toFixed(2))
@@ -56,19 +49,19 @@ export async function fetchBalanceByAddress (walletAddress: Address, network: Ne
 
 export async function fetchTransaction ({
   projectId,
-  walletAddress,
+  address,
   network,
   page,
   blockNumber
 }: {
   projectId: string
-  walletAddress: Address
+  address: Address
   network: Network
   page?: number
   blockNumber?: number
 }): Promise<Transaction[]> {
   const res = await fetch(
-    `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlist&address=${walletAddress}&startblock=${blockNumber ?? 0}&endblock=${blockNumber ?? 99999999}&page=${page ?? 1}&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
+    `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlist&address=${address}&startblock=${blockNumber ?? 0}&endblock=${blockNumber ?? 99999999}&page=${page ?? 1}&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
   )
   const scanTransactions = await res.json()
   if (typeof scanTransactions?.result === typeof []) {
@@ -77,11 +70,11 @@ export async function fetchTransaction ({
   return []
 }
 
-export async function fetchTransactionNetwork (projectId: string, walletAddress: Address, network: Network): Promise<Transaction[]> {
+export async function fetchTransactionNetwork (projectId: string, address: Address, network: Network): Promise<Transaction[]> {
   const transactions: Transaction[] = []
   try {
     for (let page = 1; page <= NUM_SCAN_PAGES; ++page) {
-      const newTransactions = await fetchTransaction({ projectId, walletAddress, network, page })
+      const newTransactions = await fetchTransaction({ projectId, address, network, page })
       if (newTransactions.length === 0) {
         break
       }
@@ -94,9 +87,9 @@ export async function fetchTransactionNetwork (projectId: string, walletAddress:
   return transactions
 }
 
-export async function fetchAllTransactions (projectId: string, walletAddress: Address): Promise<Transaction[]> {
+export async function fetchAllTransactions (projectId: string, address: Address): Promise<Transaction[]> {
   return (await Promise.all(
-    Object.values(Network).map(async (network: Network): Promise<Transaction[]> => await fetchTransactionNetwork(projectId, walletAddress, network))
+    Object.values(Network).map(async (network: Network): Promise<Transaction[]> => await fetchTransactionNetwork(projectId, address, network))
   )).flat()
 }
 
@@ -107,12 +100,12 @@ export async function fetchTransactionFromContractAddress (projectId: string, co
   const data = await res.json()
   const {
     blockNumber,
-    from: walletAddress
+    from: address
   } = data.result[0] as {
     blockNumber: number
     from: Address
   }
-  const transactions = await fetchTransaction({ projectId, walletAddress, network, blockNumber })
+  const transactions = await fetchTransaction({ projectId, address, network, blockNumber })
   return {
     ProxyContractAddress: contractAddress,
     ...transactions[0]
@@ -133,10 +126,11 @@ export async function fetchOneContract ({
   if (contractAddress === '') {
     throw new Error('Please provide a non-empty contract address.')
   }
+  const address = normalizeAddress(contractAddress)
   const transactions = await fetchTransactionNetwork(projectId, walletAddress, network)
-  const filteredTransactions = transactions.filter((transaction: Transaction) => transaction.ContractAddress === contractAddress)
+  const filteredTransactions = transactions.filter((transaction: Transaction) => transaction.ContractAddress === address)
   if (filteredTransactions.length === 0) {
-    throw new Error(`The address ${walletAddress} has not deployed any contracts with address ${contractAddress} on ${network}!`)
+    throw new Error(`The address ${walletAddress} has not deployed any contracts with address ${address} on ${network}!`)
   }
   return filteredTransactions[0]
 }
