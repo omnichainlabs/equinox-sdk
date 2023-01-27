@@ -110,6 +110,7 @@ export interface Transaction {
   Network: Network
   Nonce?: number
   ProjectId: string
+  ProxyContractAddress?: Address
   Timestamp: number
   ToAddress?: Address
   TransactionIndex?: number
