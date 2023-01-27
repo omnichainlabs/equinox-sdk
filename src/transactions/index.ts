@@ -33,26 +33,9 @@ export async function getAllTransactions ({
       }
     })
     transactions = await response.json()
-    if (transactions.length === 0) {
-      transactions = await fetchAllTransactions(walletAddress)
-      for (const transaction of transactions) {
-        await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions`, {
-          method: 'POST',
-          mode: 'cors',
-          body: JSON.stringify(transaction),
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': user.apikey,
-            'x-user-id': user.email
-          }
-        })
-        await new Promise((resolve) => setTimeout(resolve, RATE_LIMIT_INTERVAL_MS))
-      }
-    }
   } catch (err) {
     console.error(err)
   }
-
   if (contractsOnly) {
     return transactions.filter((transaction: Transaction) => transaction.ContractId)
   }

@@ -10,6 +10,13 @@ export interface Apikey {
   TotalTimeElapsed: number
 };
 
+export interface Contract {
+  ProjectId: string
+  ContractId: string
+  Network: Network
+  ContractAddress: Address
+}
+
 export interface GateCollection {
   ContractAddress: Address
   ImageUrl: string
