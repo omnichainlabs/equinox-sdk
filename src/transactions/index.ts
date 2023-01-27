@@ -14,19 +14,19 @@ const NUM_SCAN_PAGES = 10
 const RATE_LIMIT_INTERVAL_MS = 300
 
 export async function getAllTransactions ({
-  walletAddress,
+  projectId,
   user,
   contractsOnly = false,
   transactionsOnly = false
 }: {
-  walletAddress: Address
+  projectId: string
   user: UserProps
   contractsOnly?: boolean
   transactionsOnly?: boolean
 }): Promise<Transaction[]> {
   let transactions: Transaction[] = []
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${user.email}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${projectId}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -54,22 +54,22 @@ export async function getBalanceByAddress (walletAddress: Address, network: Netw
   return balance
 }
 
-export async function fetchTransactionPage (walletAddress: Address, network: Network, page: number): Promise<Transaction[]> {
+export async function fetchTransactionPage (projectId: string, walletAddress: Address, network: Network, page: number): Promise<Transaction[]> {
   const res = await fetch(
     `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlist&address=${walletAddress}&startblock=0&endblock=99999999&page=${page}&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
   )
   const scanTransactions = await res.json()
   if (typeof scanTransactions?.result === typeof []) {
-    return scanTransactions.result.map((scanTransaction: ScanTransaction): Transaction => scanTransactionToTransaction(network, scanTransaction))
+    return scanTransactions.result.map((scanTransaction: ScanTransaction): Transaction => scanTransactionToTransaction(projectId, network, scanTransaction))
   }
   return []
 }
 
-export async function fetchTransactionNetwork (walletAddress: Address, network: Network): Promise<Transaction[]> {
+export async function fetchTransactionNetwork (projectId: string, walletAddress: Address, network: Network): Promise<Transaction[]> {
   const transactions: Transaction[] = []
   try {
     for (let page = 1; page <= NUM_SCAN_PAGES; ++page) {
-      const newTransactions = await fetchTransactionPage(walletAddress, network, page)
+      const newTransactions = await fetchTransactionPage(projectId, walletAddress, network, page)
       if (newTransactions.length === 0) {
         break
       }
@@ -82,17 +82,17 @@ export async function fetchTransactionNetwork (walletAddress: Address, network: 
   return transactions
 }
 
-export async function fetchAllTransactions (walletAddress: Address): Promise<Transaction[]> {
+export async function fetchAllTransactions (projectId: string, walletAddress: Address): Promise<Transaction[]> {
   return (await Promise.all(
-    Object.values(Network).map(async (network: Network): Promise<Transaction[]> => await fetchTransactionNetwork(walletAddress, network))
+    Object.values(Network).map(async (network: Network): Promise<Transaction[]> => await fetchTransactionNetwork(projectId, walletAddress, network))
   )).flat()
 }
 
-export async function fetchOneContract (walletAddress: Address, network: Network, contractAddress: Address): Promise<Transaction> {
+export async function fetchOneContract (projectId: string, walletAddress: Address, network: Network, contractAddress: Address): Promise<Transaction> {
   if (contractAddress === '') {
     throw new Error('Please provide a non-empty contract address.')
   }
-  const transactions = await fetchTransactionNetwork(walletAddress, network)
+  const transactions = await fetchTransactionNetwork(projectId, walletAddress, network)
   const filteredTransactions = transactions.filter((transaction: Transaction) => transaction.ContractAddress === contractAddress)
   if (filteredTransactions.length === 0) {
     throw new Error(`The address ${walletAddress} has not deployed any contracts with address ${contractAddress} on ${network}!`)
@@ -100,7 +100,7 @@ export async function fetchOneContract (walletAddress: Address, network: Network
   return filteredTransactions[0]
 }
 
-export function scanTransactionToTransaction (Network: Network, scanTransaction: ScanTransaction): Transaction {
+export function scanTransactionToTransaction (ProjectId: string, Network: Network, scanTransaction: ScanTransaction): Transaction {
   return {
     BlockHash: scanTransaction.blockHash,
     BlockNumber: Number(scanTransaction.blockNumber),
@@ -119,7 +119,7 @@ export function scanTransactionToTransaction (Network: Network, scanTransaction:
     MethodId: scanTransaction.methodId,
     Network,
     Nonce: Number(scanTransaction.nonce),
-    ProjectId: 'My First Project',
+    ProjectId,
     Timestamp: Number(scanTransaction.timeStamp),
     TransactionIndex: Number(scanTransaction.transactionIndex),
     ToAddress: normalizeAddress(scanTransaction.to),
