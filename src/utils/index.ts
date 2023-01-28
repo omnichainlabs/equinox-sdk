@@ -1,8 +1,11 @@
 import { Network as EthersNetwork } from '@ethersproject/networks'
+import { SCAN_MAP } from '../constants.js'
 import {
   Address,
   ISOString,
-  Network
+  Network,
+  Transaction,
+  TransactionHash
 } from '../types.js'
 
 export * from './alchemy.js'
@@ -61,5 +64,32 @@ export function ethersNetworkToNetwork (network: EthersNetwork): Network {
       return Network.Sepolia
     default:
       return Network.Mumbai
+  }
+}
+
+export function getDetailsPageLink ({
+  network,
+  address,
+  transactionHash
+}: {
+  network: Network
+  address?: Address
+  transactionHash?: TransactionHash
+}): string {
+  if (address !== undefined) {
+    return `${SCAN_MAP[network].explorerUrl}/address/${address}`
+  } else if (transactionHash !== undefined) {
+    return `${SCAN_MAP[network].explorerUrl}/tx/${transactionHash}`
+  } else {
+    return ''
+  }
+}
+
+export function normalizeAddressOrProxyAddress (transaction: Transaction): Address | undefined {
+  if (transaction.ContractAddress !== undefined) {
+    return normalizeAddress(transaction.ContractAddress)
+  }
+  if (transaction.ProxyContractAddress !== undefined) {
+    return normalizeAddress(transaction.ProxyContractAddress)
   }
 }
