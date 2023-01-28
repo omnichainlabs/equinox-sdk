@@ -5,7 +5,7 @@ import {
 
 export async function getAllGates (user: UserProps): Promise<GateItem[]> {
   try {
-    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/gates`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -21,7 +21,7 @@ export async function getAllGates (user: UserProps): Promise<GateItem[]> {
 
 export async function getGate (UserId: string, GateId: string): Promise<GateItem | undefined> {
   try {
-    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/gates/${UserId}/${GateId}`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates/${UserId}/${GateId}`)
     return await response.json()
   } catch (err) {
     console.error(`Error occurred when trying to GET /gates/${UserId}/${GateId}`)
@@ -31,7 +31,7 @@ export async function getGate (UserId: string, GateId: string): Promise<GateItem
 
 export async function deleteGate (user: UserProps, GateId: string): Promise<void> {
   try {
-    await fetch(`${process.env.BEANSTALK_SERVER_URL}/gates/${GateId}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates/${GateId}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
@@ -46,7 +46,7 @@ export async function deleteGate (user: UserProps, GateId: string): Promise<void
 
 export async function postGate (user: UserProps, gate: GateItem): Promise<GateItem | undefined> {
   try {
-    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/gates`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(gate),

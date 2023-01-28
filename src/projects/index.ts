@@ -5,7 +5,7 @@ import {
 
 export async function getAllProjects (user: UserProps): Promise<Project[]> {
   try {
-    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/projects`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -21,7 +21,7 @@ export async function getAllProjects (user: UserProps): Promise<Project[]> {
 
 export async function getProject (user: UserProps, ProjectId: string): Promise<Project | undefined> {
   try {
-    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/projects/${ProjectId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${ProjectId}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -36,7 +36,7 @@ export async function getProject (user: UserProps, ProjectId: string): Promise<P
 
 export async function deleteProject (user: UserProps, ProjectId: string): Promise<void> {
   try {
-    await fetch(`${process.env.BEANSTALK_SERVER_URL}/projects/${ProjectId}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${ProjectId}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
@@ -51,7 +51,7 @@ export async function deleteProject (user: UserProps, ProjectId: string): Promis
 
 export async function postProject (user: UserProps, project: Project): Promise<Project | undefined> {
   try {
-    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/projects`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(project),

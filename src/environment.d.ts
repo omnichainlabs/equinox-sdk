@@ -1,7 +1,7 @@
 /* eslint-disable */
 namespace NodeJS {
   interface ProcessEnv {
-    BEANSTALK_SERVER_URL: string;
+    NEXT_PUBLIC_BEANSTALK_SERVER_URL: string;
     ALCHEMY_API_KEY: string;
     ETHERSCAN_KEY: string;
     POLYGONSCAN_KEY: string;

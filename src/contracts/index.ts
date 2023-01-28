@@ -5,7 +5,7 @@ import {
 
 export async function getAllContracts (user: UserProps, ProjectId: string): Promise<Contract[]> {
   try {
-    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/contracts/${ProjectId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts/${ProjectId}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -21,7 +21,7 @@ export async function getAllContracts (user: UserProps, ProjectId: string): Prom
 
 export async function getContract (user: UserProps, ProjectId: string, ContractId: string): Promise<Contract | undefined> {
   try {
-    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/contracts/${ProjectId}/${ContractId}`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts/${ProjectId}/${ContractId}`)
     return await response.json()
   } catch (err) {
     console.error(`Error occurred when trying to GET /contracts/${ProjectId}/${ContractId}`)
@@ -31,7 +31,7 @@ export async function getContract (user: UserProps, ProjectId: string, ContractI
 
 export async function deleteContract (user: UserProps, ProjectId: string, ContractId: string): Promise<void> {
   try {
-    await fetch(`${process.env.BEANSTALK_SERVER_URL}/contracts/${ProjectId}/${ContractId}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts/${ProjectId}/${ContractId}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
@@ -46,7 +46,7 @@ export async function deleteContract (user: UserProps, ProjectId: string, Contra
 
 export async function postContract (user: UserProps, contract: Contract): Promise<Contract | undefined> {
   try {
-    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/contracts`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(contract),
