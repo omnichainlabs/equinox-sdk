@@ -10,6 +10,11 @@ export interface Apikey {
   TotalTimeElapsed: number
 };
 
+export interface ApikeyRequest {
+  Label: string
+  Expiration: ISOString
+}
+
 export interface Contract {
   ProjectId: string
   ContractId: string

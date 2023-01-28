@@ -44,7 +44,7 @@ export async function deleteGate (user: UserProps, GateId: string): Promise<void
   }
 }
 
-export async function postGate (user: UserProps, gate: Gate): Promise<void> {
+export async function postGate (user: UserProps, gate: GateItem): Promise<void> {
   try {
     await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates`, {
       method: 'POST',
