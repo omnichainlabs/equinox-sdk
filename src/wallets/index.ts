@@ -19,32 +19,20 @@ export async function getAllWallets (user: UserProps, ProjectId: string): Promis
   return []
 }
 
-export async function getWallet (user: UserProps, ProjectId: string, WalletAddress: string): Promise<Wallet | undefined> {
+export async function deleteWallet (user: UserProps, wallet: Wallet): Promise<void> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets/${ProjectId}/${WalletAddress}`, {
-      headers: {
-        'x-api-key': user.apikey,
-        'x-user-id': user.email
-      }
-    })
-    return await response.json()
-  } catch (err) {
-    console.error(`Error occurred when trying to GET /wallets/${ProjectId}/${WalletAddress}`)
-    console.error(err)
-  }
-}
-
-export async function deleteWallet (user: UserProps, ProjectId: string, WalletAddress: string): Promise<void> {
-  try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets/${ProjectId}/${WalletAddress}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets`, {
       method: 'DELETE',
+      mode: 'cors',
+      body: JSON.stringify(wallet),
       headers: {
+        'Content-Type': 'application/json',
         'x-api-key': user.apikey,
         'x-user-id': user.email
       }
     })
   } catch (err) {
-    console.error(`Error occurred when trying to DELETE /wallets/${ProjectId}/${WalletAddress}`)
+    console.error('Error occurred when trying to DELETE /wallets')
     console.error(err)
   }
 }
