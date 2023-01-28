@@ -44,9 +44,9 @@ export async function deleteContract (user: UserProps, ProjectId: string, Contra
   }
 }
 
-export async function postContract (user: UserProps, contract: Contract): Promise<void> {
+export async function postContract (user: UserProps, contract: Contract): Promise<Contract | undefined> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(contract),
@@ -56,6 +56,7 @@ export async function postContract (user: UserProps, contract: Contract): Promis
         'x-user-id': user.email
       }
     })
+    return await response.json()
   } catch (err) {
     console.error('Error occurred when trying to POST /contracts')
     console.error(err)

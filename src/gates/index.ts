@@ -44,9 +44,9 @@ export async function deleteGate (user: UserProps, GateId: string): Promise<void
   }
 }
 
-export async function postGate (user: UserProps, gate: GateItem): Promise<void> {
+export async function postGate (user: UserProps, gate: GateItem): Promise<GateItem | undefined> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(gate),
@@ -56,6 +56,7 @@ export async function postGate (user: UserProps, gate: GateItem): Promise<void> 
         'x-user-id': user.email
       }
     })
+    return await response.json()
   } catch (err) {
     console.error('Error occurred when trying to POST /gates')
     console.error(err)

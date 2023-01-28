@@ -49,9 +49,9 @@ export async function deleteProject (user: UserProps, ProjectId: string): Promis
   }
 }
 
-export async function postProject (user: UserProps, project: Project): Promise<void> {
+export async function postProject (user: UserProps, project: Project): Promise<Project | undefined> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(project),
@@ -61,6 +61,7 @@ export async function postProject (user: UserProps, project: Project): Promise<v
         'x-user-id': user.email
       }
     })
+    return await response.json()
   } catch (err) {
     console.error('Error occurred when trying to POST /projects')
     console.error(err)

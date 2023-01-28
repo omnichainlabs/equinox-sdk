@@ -62,9 +62,9 @@ export async function deleteTransaction (user: UserProps, ProjectId: string, Tra
   }
 }
 
-export async function postTransaction (user: UserProps, transaction: Transaction): Promise<void> {
+export async function postTransaction (user: UserProps, transaction: Transaction): Promise<Transaction | undefined> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(transaction),
@@ -74,6 +74,7 @@ export async function postTransaction (user: UserProps, transaction: Transaction
         'x-user-id': user.email
       }
     })
+    return await response.json()
   } catch (err) {
     console.error('Error occurred when trying to POST /transactions')
     console.error(err)

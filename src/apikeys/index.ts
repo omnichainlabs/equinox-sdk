@@ -35,9 +35,9 @@ export async function deleteApikey (user: UserProps, Label: string): Promise<voi
   }
 }
 
-export async function postApikey (user: UserProps, apikeyRequest: ApikeyRequest): Promise<void> {
+export async function postApikey (user: UserProps, apikeyRequest: ApikeyRequest): Promise<Apikey | undefined> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/apikeys`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/apikeys`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(apikeyRequest),
@@ -47,6 +47,7 @@ export async function postApikey (user: UserProps, apikeyRequest: ApikeyRequest)
         'x-user-id': user.email
       }
     })
+    return await response.json()
   } catch (err) {
     console.error('Error occurred when trying to POST /apikeys')
     console.error(err)
