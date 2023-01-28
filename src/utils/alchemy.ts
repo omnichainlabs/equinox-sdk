@@ -3,15 +3,15 @@ import {
   Network
 } from 'alchemy-sdk'
 
-let alchemySingleton: Alchemy
+let alchemySingletonObject: Alchemy
 
-export const AlchemySingleton = (): Alchemy => {
+export const alchemySingleton = (): Alchemy => {
   const alchemySettings = {
     apiKey: process.env.ALCHEMY_API_KEY,
     network: Network.MATIC_MUMBAI
   }
-  if (alchemySingleton === undefined) {
-    alchemySingleton = new Alchemy(alchemySettings)
+  if (alchemySingletonObject === undefined) {
+    alchemySingletonObject = new Alchemy(alchemySettings)
   }
-  return alchemySingleton
+  return alchemySingletonObject
 }

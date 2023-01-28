@@ -21,9 +21,9 @@ export async function getAllApikeys (user: UserProps): Promise<Apikey[]> {
   return []
 }
 
-export async function deleteApikey (user: UserProps, Label: string): Promise<void> {
+export async function deleteApikey (user: UserProps, label: string): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/apikeys/${Label}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/apikeys/${label}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
@@ -31,7 +31,7 @@ export async function deleteApikey (user: UserProps, Label: string): Promise<voi
       }
     })
   } catch (err) {
-    console.error(`Error occurred when trying to DELETE /apikeys/${Label}`)
+    console.error(`Error occurred when trying to DELETE /apikeys/${label}`)
     console.error(err)
   }
 }

@@ -19,19 +19,19 @@ export async function getAllGates (user: UserProps): Promise<GateItem[]> {
   return []
 }
 
-export async function getGate (UserId: string, GateId: string): Promise<GateItem | undefined> {
+export async function getGate (userId: string, gateId: string): Promise<GateItem | undefined> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates/${UserId}/${GateId}`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates/${userId}/${gateId}`)
     return await response.json()
   } catch (err) {
-    console.error(`Error occurred when trying to GET /gates/${UserId}/${GateId}`)
+    console.error(`Error occurred when trying to GET /gates/${userId}/${gateId}`)
     console.error(err)
   }
 }
 
-export async function deleteGate (user: UserProps, GateId: string): Promise<void> {
+export async function deleteGate (user: UserProps, gateId: string): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates/${GateId}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates/${gateId}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
@@ -39,7 +39,7 @@ export async function deleteGate (user: UserProps, GateId: string): Promise<void
       }
     })
   } catch (err) {
-    console.error(`Error occurred when trying to DELETE /gates/${GateId}`)
+    console.error(`Error occurred when trying to DELETE /gates/${gateId}`)
     console.error(err)
   }
 }

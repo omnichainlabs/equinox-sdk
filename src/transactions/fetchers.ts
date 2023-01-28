@@ -1,4 +1,3 @@
-import { normalize } from 'path'
 
 import { SCAN_MAP } from '../constants.js'
 import {
@@ -93,7 +92,7 @@ export async function fetchTransactionFromContractAddress (projectId: string, co
     return
   }
   return {
-    ProxyContractAddress: contractAddress,
+    proxyContractAddress: contractAddress,
     ...transactions[0]
   }
 }
@@ -114,37 +113,36 @@ export async function fetchOneContract ({
   }
   const address = normalizeAddress(contractAddress)
   const transactions = await fetchTransactionNetwork(projectId, walletAddress, network)
-  const filteredTransactions = transactions.filter((transaction: Transaction) => transaction.ContractAddress === address)
+  const filteredTransactions = transactions.filter((transaction: Transaction) => transaction.contractAddress === address || transaction.proxyContractAddress === address)
   if (filteredTransactions.length === 0) {
     throw new Error(`The address ${walletAddress} has not deployed any contracts with address ${address} on ${network}!`)
   }
   return filteredTransactions[0]
 }
 
-export function scanTransactionToTransaction (ProjectId: string, Network: Network, scanTransaction: ScanTransaction): Transaction {
+export function scanTransactionToTransaction (projectId: string, network: Network, scanTransaction: ScanTransaction): Transaction {
   return {
-    BlockHash: scanTransaction.blockHash,
-    BlockNumber: Number(scanTransaction.blockNumber),
-    Confirmations: Number(scanTransaction.confirmations),
-    ContractAddress: normalizeAddress(scanTransaction.contractAddress) ?? normalize(scanTransaction.to),
-    ContractId: normalizeAddress(scanTransaction.contractAddress),
-    CumulativeGasUsed: Number(scanTransaction.cumulativeGasUsed),
-    FromAddress: normalizeAddress(scanTransaction.from),
-    FunctionName: scanTransaction.functionName,
-    Gas: Number(scanTransaction.gas),
-    GasPrice: Number(scanTransaction.gasPrice),
-    GasUsed: Number(scanTransaction.gasUsed),
-    TransactionHash: scanTransaction.hash,
-    Input: scanTransaction.input,
-    IsError: scanTransaction.isError,
-    MethodId: scanTransaction.methodId,
-    Network,
-    Nonce: Number(scanTransaction.nonce),
-    ProjectId,
-    Timestamp: Number(scanTransaction.timeStamp),
-    TransactionIndex: Number(scanTransaction.transactionIndex),
-    ToAddress: normalizeAddress(scanTransaction.to),
-    TxReceiptStatus: Number(scanTransaction.txreceipt_status),
-    Value: scanTransaction.value
+    blockHash: scanTransaction.blockHash,
+    blockNumber: Number(scanTransaction.blockNumber),
+    confirmations: Number(scanTransaction.confirmations),
+    contractAddress: normalizeAddress(scanTransaction.contractAddress),
+    cumulativeGasUsed: Number(scanTransaction.cumulativeGasUsed),
+    fromAddress: normalizeAddress(scanTransaction.from),
+    functionName: scanTransaction.functionName,
+    gas: Number(scanTransaction.gas),
+    gasPrice: Number(scanTransaction.gasPrice),
+    gasUsed: Number(scanTransaction.gasUsed),
+    input: scanTransaction.input,
+    isError: scanTransaction.isError,
+    methodId: scanTransaction.methodId,
+    network,
+    nonce: Number(scanTransaction.nonce),
+    projectId,
+    timestamp: Number(scanTransaction.timeStamp),
+    toAddress: normalizeAddress(scanTransaction.to),
+    transactionHash: scanTransaction.hash,
+    transactionIndex: Number(scanTransaction.transactionIndex),
+    txReceiptStatus: Number(scanTransaction.txreceipt_status),
+    value: scanTransaction.value
   }
 }

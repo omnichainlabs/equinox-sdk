@@ -3,9 +3,9 @@ import {
   Wallet
 } from '../types.js'
 
-export async function getAllWallets (user: UserProps, ProjectId: string): Promise<Wallet[]> {
+export async function getAllWallets (user: UserProps, projectId: string): Promise<Wallet[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets/${ProjectId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets/${projectId}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -13,7 +13,7 @@ export async function getAllWallets (user: UserProps, ProjectId: string): Promis
     })
     return await response.json()
   } catch (err) {
-    console.error(`Error occurred when trying to GET /wallets/${ProjectId}`)
+    console.error(`Error occurred when trying to GET /wallets/${projectId}`)
     console.error(err)
   }
   return []

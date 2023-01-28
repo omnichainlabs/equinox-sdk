@@ -1,53 +1,53 @@
 export type Address = string
 
 export interface Apikey {
-  UserId: string
-  LabelWithPrefix: string
-  Expiration: ISOString
-  Hash: string
-  CreatedAt: ISOString
-  TotalRequests: number
-  TotalTimeElapsed: number
+  userId: string
+  labelWithPrefix: string
+  expiration: ISOString
+  hash: string
+  createdAt: ISOString
+  totalRequests: number
+  totalTimeElapsed: number
 };
 
 export interface ApikeyResponse extends Apikey {
-  Apikey: string
+  apikey: string
 }
 
 export interface ApikeyRequest {
-  Label: string
-  Expiration: ISOString
+  label: string
+  expiration: ISOString
 }
 
 export type BlockHash = string
 
 export interface Contract {
-  ProjectId: string
-  ContractId: string
-  Network: Network
-  ContractAddress: Address
+  projectId: string
+  contractId: string
+  network: Network
+  contractAddress: Address
 }
 
 export interface GateCollection {
-  ContractAddress: Address
-  ImageUrl: string
-  Name: string
-  OpenSeaSlug: string
+  contractAddress: Address
+  imageUrl: string
+  name: string
+  openSeaSlug: string
 };
 
 export interface GateItem {
-  UserId: string
-  GateId: string
-  Content: string
-  MustHaveAll: boolean
-  Collections: GateCollection[]
+  userId: string
+  gateId: string
+  content: string
+  mustHaveAll: boolean
+  collections: GateCollection[]
 };
 
 export type ISOString = string
 
 export interface Project {
-  ProjectId: string
-  AdminUserIds: string[]
+  projectId: string
+  adminUserIds: string[]
 }
 
 export enum Network {
@@ -63,12 +63,12 @@ export enum Network {
 }
 
 export interface NFTMetadata {
-  ContractId: string
-  Network: Network
-  Description: string
-  PrimaryPayoutAddress: Address
-  SecondaryPayoutAddress: Address
-  RoyaltyPercentage: number
+  contractId: string
+  network: Network
+  description: string
+  primaryPayoutAddress: Address
+  secondaryPayoutAddress: Address
+  royaltyPercentage: number
 };
 
 export interface ScanInfo {
@@ -100,31 +100,34 @@ export interface ScanTransaction {
   value: string
 }
 
-export interface Transaction {
-  BlockHash?: BlockHash
-  BlockNumber: number
-  Confirmations?: number
-  ContractAddress?: Address
-  ContractId?: string
-  CumulativeGasUsed?: number
-  FromAddress: Address
-  FunctionName?: string
-  Gas?: number
-  GasPrice?: number
-  GasUsed?: number
-  Input?: string
-  IsError?: string
-  MethodId?: string
-  Network: Network
-  Nonce?: number
-  ProjectId: string
-  ProxyContractAddress?: Address
-  Timestamp: number
-  ToAddress?: Address
-  TransactionHash: TransactionHash
-  TransactionIndex?: number
-  TxReceiptStatus?: TransactionStatus
-  Value?: string
+export interface TransactionFromScan {
+  blockHash?: BlockHash
+  blockNumber: number
+  confirmations?: number
+  contractAddress?: Address
+  cumulativeGasUsed?: number
+  fromAddress: Address
+  functionName?: string
+  gas?: number
+  gasPrice?: number
+  gasUsed?: number
+  input?: string
+  isError?: string
+  methodId?: string
+  nonce?: number
+  timestamp: number
+  toAddress?: Address
+  transactionHash: TransactionHash
+  transactionIndex?: number
+  txReceiptStatus?: TransactionStatus
+  value?: string
+}
+
+export interface Transaction extends TransactionFromScan {
+  contractId?: string
+  network: Network
+  projectId: string
+  proxyContractAddress?: Address
 }
 
 export type TransactionHash = string
@@ -144,7 +147,7 @@ export interface UserProps {
 }
 
 export interface Wallet {
-  ProjectId: string
-  WalletAddress: Address
-  Network: Network
+  projectId: string
+  network: Network
+  walletAddress: Address
 }

@@ -19,9 +19,9 @@ export async function getAllProjects (user: UserProps): Promise<Project[]> {
   return []
 }
 
-export async function getProject (user: UserProps, ProjectId: string): Promise<Project | undefined> {
+export async function getProject (user: UserProps, projectId: string): Promise<Project | undefined> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${ProjectId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${projectId}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -29,14 +29,14 @@ export async function getProject (user: UserProps, ProjectId: string): Promise<P
     })
     return await response.json()
   } catch (err) {
-    console.error(`Error occurred when trying to GET /projects/${ProjectId}`)
+    console.error(`Error occurred when trying to GET /projects/${projectId}`)
     console.error(err)
   }
 }
 
-export async function deleteProject (user: UserProps, ProjectId: string): Promise<void> {
+export async function deleteProject (user: UserProps, projectId: string): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${ProjectId}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${projectId}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
@@ -44,7 +44,7 @@ export async function deleteProject (user: UserProps, ProjectId: string): Promis
       }
     })
   } catch (err) {
-    console.error(`Error occurred when trying to DELETE /projects/${ProjectId}`)
+    console.error(`Error occurred when trying to DELETE /projects/${projectId}`)
     console.error(err)
   }
 }

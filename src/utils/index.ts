@@ -82,10 +82,10 @@ export function getDetailsPageLink ({
 }
 
 export function normalizeAddressOrProxyAddress (transaction: Transaction): Address | undefined {
-  if (transaction.ContractAddress !== undefined && transaction.ContractAddress !== '') {
-    return normalizeAddress(transaction.ContractAddress)
+  if (transaction.contractAddress !== undefined && transaction.contractAddress !== '') {
+    return normalizeAddress(transaction.contractAddress)
   }
-  if (transaction.ProxyContractAddress !== undefined && transaction.ProxyContractAddress !== '') {
-    return normalizeAddress(transaction.ProxyContractAddress)
+  if (transaction.proxyContractAddress !== undefined && transaction.proxyContractAddress !== '') {
+    return normalizeAddress(transaction.proxyContractAddress)
   }
 }

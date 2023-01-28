@@ -8,17 +8,17 @@ export * from './fetchers.js'
 
 export async function getAllTransactions ({
   user,
-  ProjectId,
+  projectId,
   contractsOnly = false,
   transactionsOnly = false
 }: {
   user: UserProps
-  ProjectId: string
+  projectId: string
   contractsOnly?: boolean
   transactionsOnly?: boolean
 }): Promise<Transaction[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${ProjectId}?contractsOnly=${contractsOnly}&transactionsOnly=${transactionsOnly}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${projectId}?contractsOnly=${contractsOnly}&transactionsOnly=${transactionsOnly}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -26,15 +26,15 @@ export async function getAllTransactions ({
     })
     return await response.json()
   } catch (err) {
-    console.error(`Error occurred when trying to GET /transactions/${ProjectId}`)
+    console.error(`Error occurred when trying to GET /transactions/${projectId}`)
     console.error(err)
   }
   return []
 }
 
-export async function getTransaction (user: UserProps, ProjectId: string, TransactionHash: TransactionHash): Promise<Transaction | undefined> {
+export async function getTransaction (user: UserProps, projectId: string, transactionHash: TransactionHash): Promise<Transaction | undefined> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${ProjectId}/${TransactionHash}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${projectId}/${transactionHash}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -42,14 +42,14 @@ export async function getTransaction (user: UserProps, ProjectId: string, Transa
     })
     return await response.json()
   } catch (err) {
-    console.error(`Error occurred when trying to GET /transactions/${ProjectId}/${TransactionHash}`)
+    console.error(`Error occurred when trying to GET /transactions/${projectId}/${transactionHash}`)
     console.error(err)
   }
 }
 
-export async function deleteTransaction (user: UserProps, ProjectId: string, TransactionHash: TransactionHash): Promise<void> {
+export async function deleteTransaction (user: UserProps, projectId: string, transactionHash: TransactionHash): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${ProjectId}/${TransactionHash}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${projectId}/${transactionHash}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
@@ -57,7 +57,7 @@ export async function deleteTransaction (user: UserProps, ProjectId: string, Tra
       }
     })
   } catch (err) {
-    console.error(`Error occurred when trying to DELETE /transactions/${ProjectId}/${TransactionHash}`)
+    console.error(`Error occurred when trying to DELETE /transactions/${projectId}/${transactionHash}`)
     console.error(err)
   }
 }
