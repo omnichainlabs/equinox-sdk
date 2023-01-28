@@ -19,6 +19,8 @@ export interface ApikeyRequest {
   Expiration: ISOString
 }
 
+export type BlockHash = string
+
 export interface Contract {
   ProjectId: string
   ContractId: string
@@ -76,7 +78,7 @@ export interface ScanInfo {
 }
 
 export interface ScanTransaction {
-  blockHash: string
+  blockHash: BlockHash
   blockNumber: string
   confirmations: string
   contractAddress: Address
@@ -99,7 +101,7 @@ export interface ScanTransaction {
 }
 
 export interface Transaction {
-  BlockHash?: string
+  BlockHash?: BlockHash
   BlockNumber: number
   Confirmations?: number
   ContractAddress?: Address
@@ -110,7 +112,6 @@ export interface Transaction {
   Gas?: number
   GasPrice?: number
   GasUsed?: number
-  TransactionHash: TransactionHash
   Input?: string
   IsError?: string
   MethodId?: string
@@ -120,6 +121,7 @@ export interface Transaction {
   ProxyContractAddress?: Address
   Timestamp: number
   ToAddress?: Address
+  TransactionHash: TransactionHash
   TransactionIndex?: number
   TxReceiptStatus?: TransactionStatus
   Value?: string
@@ -144,4 +146,5 @@ export interface UserProps {
 export interface Wallet {
   ProjectId: string
   WalletAddress: Address
+  Network: Network
 }
