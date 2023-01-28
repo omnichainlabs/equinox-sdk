@@ -10,6 +10,10 @@ export interface Apikey {
   TotalTimeElapsed: number
 };
 
+export interface ApikeyResponse extends Apikey {
+  Apikey: string
+}
+
 export interface ApikeyRequest {
   Label: string
   Expiration: ISOString

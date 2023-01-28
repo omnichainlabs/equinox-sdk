@@ -18,7 +18,7 @@ export async function getAllTransactions ({
   transactionsOnly?: boolean
 }): Promise<Transaction[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${ProjectId}?contractsOnly=${contractsOnly}&transactionsOnly=${transactionsOnly}`, {
+    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/transactions/${ProjectId}?contractsOnly=${contractsOnly}&transactionsOnly=${transactionsOnly}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -34,7 +34,7 @@ export async function getAllTransactions ({
 
 export async function getTransaction (user: UserProps, ProjectId: string, TransactionHash: TransactionHash): Promise<Transaction | undefined> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${ProjectId}/${TransactionHash}`, {
+    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/projects/${ProjectId}/${TransactionHash}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -49,7 +49,7 @@ export async function getTransaction (user: UserProps, ProjectId: string, Transa
 
 export async function deleteTransaction (user: UserProps, ProjectId: string, TransactionHash: TransactionHash): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${ProjectId}/${TransactionHash}`, {
+    await fetch(`${process.env.BEANSTALK_SERVER_URL}/transactions/${ProjectId}/${TransactionHash}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
@@ -64,7 +64,7 @@ export async function deleteTransaction (user: UserProps, ProjectId: string, Tra
 
 export async function postTransaction (user: UserProps, transaction: Transaction): Promise<Transaction | undefined> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions`, {
+    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/transactions`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(transaction),

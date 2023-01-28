@@ -1,12 +1,13 @@
 import {
   Apikey,
   ApikeyRequest,
+  ApikeyResponse,
   UserProps
 } from '../types.js'
 
 export async function getAllApikeys (user: UserProps): Promise<Apikey[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/apikeys`, {
+    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/apikeys`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -22,7 +23,7 @@ export async function getAllApikeys (user: UserProps): Promise<Apikey[]> {
 
 export async function deleteApikey (user: UserProps, Label: string): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/apikeys/${Label}`, {
+    await fetch(`${process.env.BEANSTALK_SERVER_URL}/apikeys/${Label}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
@@ -30,14 +31,14 @@ export async function deleteApikey (user: UserProps, Label: string): Promise<voi
       }
     })
   } catch (err) {
-    console.error('Error occurred when trying to DELETE /apikeys')
+    console.error(`Error occurred when trying to DELETE /apikeys/${Label}`)
     console.error(err)
   }
 }
 
-export async function postApikey (user: UserProps, apikeyRequest: ApikeyRequest): Promise<Apikey | undefined> {
+export async function postApikey (user: UserProps, apikeyRequest: ApikeyRequest): Promise<ApikeyResponse | undefined> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/apikeys`, {
+    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/apikeys`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(apikeyRequest),

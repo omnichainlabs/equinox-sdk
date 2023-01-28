@@ -5,7 +5,7 @@ import {
 
 export async function getAllWallets (user: UserProps, ProjectId: string): Promise<Wallet[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets/${ProjectId}`, {
+    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/wallets/${ProjectId}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -21,7 +21,7 @@ export async function getAllWallets (user: UserProps, ProjectId: string): Promis
 
 export async function getWallet (user: UserProps, ProjectId: string, WalletAddress: string): Promise<Wallet | undefined> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets/${ProjectId}/${WalletAddress}`, {
+    const response = await fetch(`${process.env.BEANSTALK_SERVER_URL}/wallets/${ProjectId}/${WalletAddress}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -36,7 +36,7 @@ export async function getWallet (user: UserProps, ProjectId: string, WalletAddre
 
 export async function deleteWallet (user: UserProps, ProjectId: string, WalletAddress: string): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets/${ProjectId}/${WalletAddress}`, {
+    await fetch(`${process.env.BEANSTALK_SERVER_URL}/wallets/${ProjectId}/${WalletAddress}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
@@ -51,7 +51,7 @@ export async function deleteWallet (user: UserProps, ProjectId: string, WalletAd
 
 export async function postWallet (user: UserProps, wallet: Wallet): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets`, {
+    await fetch(`${process.env.BEANSTALK_SERVER_URL}/wallets`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(wallet),
