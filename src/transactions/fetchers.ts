@@ -7,7 +7,10 @@ import {
   ScanTransaction,
   Transaction
 } from '../types.js'
-import { normalizeAddress } from '../utils/index.js'
+import {
+  normalizeAddress,
+  sleep
+} from '../utils/index.js'
 
 const NUM_SCAN_PAGES = 10
 const RATE_LIMIT_INTERVAL_MS = 300
@@ -38,7 +41,7 @@ export async function fetchTransaction ({
     `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlist&address=${address}&startblock=${blockNumber ?? 0}&endblock=${blockNumber ?? 99999999}&page=${page ?? 1}&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
   )
   const scanTransactions = await res.json()
-  if (typeof scanTransactions?.result === typeof []) {
+  if (Array.isArray(scanTransactions.result)) {
     return scanTransactions.result.map((scanTransaction: ScanTransaction): Transaction => scanTransactionToTransaction(projectId, network, scanTransaction))
   }
   return []
@@ -53,7 +56,7 @@ export async function fetchTransactionNetwork (projectId: string, address: Addre
         break
       }
       transactions.push(...newTransactions)
-      await new Promise((resolve) => setTimeout(resolve, RATE_LIMIT_INTERVAL_MS))
+      await sleep(RATE_LIMIT_INTERVAL_MS)
     }
   } catch (error) {
     console.error(error)

@@ -145,5 +145,5 @@ export interface UserProps {
 
 export interface Wallet {
   ProjectId: string
-  WalletAddress: string
+  WalletAddress: Address
 }
