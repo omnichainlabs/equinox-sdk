@@ -15,13 +15,15 @@ import {
 const NUM_SCAN_PAGES = 10
 const RATE_LIMIT_INTERVAL_MS = 300
 
-export async function fetchBalanceByAddress (address: Address, network: Network): Promise<number> {
+export async function fetchBalanceByAddress (address: Address, network: Network): Promise<number | undefined> {
   const res = await fetch(
     `${SCAN_MAP[network].apiUrl}/api?module=account&action=balance&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
   )
   const data = await res.json()
-  const balance: number = Number((Number(data.result) / 1000000000000000000).toFixed(2))
-  return balance
+  if (data.status === '1') {
+    const balance: number = Number((Number(data.result) / 1000000000000000000).toFixed(2))
+    return balance
+  }
 }
 
 export async function fetchTransaction ({
@@ -41,7 +43,7 @@ export async function fetchTransaction ({
     `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlist&address=${address}&startblock=${blockNumber ?? 0}&endblock=${blockNumber ?? 99999999}&page=${page ?? 1}&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
   )
   const scanTransactions = await res.json()
-  if (Array.isArray(scanTransactions.result)) {
+  if (scanTransactions.status === '1' && Array.isArray(scanTransactions.result)) {
     return scanTransactions.result.map((scanTransaction: ScanTransaction): Transaction => scanTransactionToTransaction(projectId, network, scanTransaction))
   }
   return []
@@ -70,11 +72,15 @@ export async function fetchAllTransactions (projectId: string, address: Address)
   )).flat()
 }
 
-export async function fetchTransactionFromContractAddress (projectId: string, contractAddress: Address, network: Network): Promise<Transaction> {
+export async function fetchTransactionFromContractAddress (projectId: string, contractAddress: Address, network: Network): Promise<Transaction | undefined> {
   const res = await fetch(
     `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlistinternal&address=${contractAddress}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
   )
   const data = await res.json()
+  if (data.status !== '1') {
+    return
+  }
+
   const {
     blockNumber,
     from: address
@@ -83,6 +89,9 @@ export async function fetchTransactionFromContractAddress (projectId: string, co
     from: Address
   }
   const transactions = await fetchTransaction({ projectId, address, network, blockNumber })
+  if (transactions.length !== 1) {
+    return
+  }
   return {
     ProxyContractAddress: contractAddress,
     ...transactions[0]

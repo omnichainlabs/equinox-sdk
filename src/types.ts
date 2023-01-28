@@ -56,8 +56,6 @@ export enum Network {
   Mumbai = 'mumbai',
   Avalanche = 'avalanche',
   Fuji = 'fuji',
-  Arbitrum = 'arbitrum',
-  ArbitrumGoerli = 'arbitrum-goerli',
   Optimism = 'optimism',
   OptimismGoerli = 'optimism-goerli'
 }

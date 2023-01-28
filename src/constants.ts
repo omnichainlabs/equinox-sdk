@@ -39,16 +39,6 @@ export const SCAN_MAP: Record<Network, ScanInfo> = {
     explorerUrl: 'https://testnet.snowtrace.io',
     apiKey: process.env.SCAN_FUJI_KEY
   },
-  [Network.Arbitrum]: {
-    apiUrl: 'https://api.arbiscan.io',
-    explorerUrl: 'https://arbiscan.io',
-    apiKey: process.env.SCAN_ARBITRUM_KEY
-  },
-  [Network.ArbitrumGoerli]: {
-    apiUrl: 'https://api-goerli.arbiscan.io',
-    explorerUrl: 'https://goerli.arbiscan.io',
-    apiKey: process.env.SCAN_ARBITRUM_GOERLI_KEY
-  },
   [Network.Optimism]: {
     apiUrl: 'https://api-optimistic.etherscan.io',
     explorerUrl: 'https://optimistic.etherscan.io',

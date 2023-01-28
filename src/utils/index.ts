@@ -50,16 +50,12 @@ export function ethersNetworkToNetwork (network: EthersNetwork): Network {
       return Network.Polygon
     case 28528:
       return Network.OptimismGoerli
-    case 42161:
-      return Network.Arbitrum
     case 43113:
       return Network.Fuji
     case 43114:
       return Network.Avalanche
     case 80001:
       return Network.Mumbai
-    case 421613:
-      return Network.ArbitrumGoerli
     case 11155111:
       return Network.Sepolia
     default:
