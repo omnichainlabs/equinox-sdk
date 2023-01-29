@@ -1,7 +1,7 @@
 import {
   Network,
-  ScanInfo,
-} from './types.js';
+  ScanInfo
+} from './types.js'
 
 export const SCAN_MAP: Record<Network, ScanInfo> = {
   [Network.Mumbai]: {

@@ -1,5 +1,6 @@
 import {
   Contract,
+  TransactionHash,
   UserProps
 } from '../types.js'
 
@@ -19,12 +20,26 @@ export async function getAllContracts (user: UserProps, projectId: string): Prom
   return []
 }
 
-export async function deleteContract (user: UserProps, contract: Contract): Promise<void> {
+export async function deleteContract ({
+  user,
+  contract,
+  shouldDeleteTransaction,
+  transactionHash
+}: {
+  user: UserProps
+  contract: Contract
+  shouldDeleteTransaction?: boolean
+  transactionHash?: TransactionHash
+}): Promise<void> {
   try {
     await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts`, {
       method: 'DELETE',
       mode: 'cors',
-      body: JSON.stringify(contract),
+      body: JSON.stringify({
+        ...contract,
+        shouldDeleteTransaction,
+        transactionHash
+      }),
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': user.apikey,
