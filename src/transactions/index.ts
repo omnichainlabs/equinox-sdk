@@ -1,6 +1,5 @@
 import {
   Transaction,
-  TransactionHash,
   UserProps
 } from '../types.js'
 
@@ -32,32 +31,20 @@ export async function getAllTransactions ({
   return []
 }
 
-export async function getTransaction (user: UserProps, projectId: string, transactionHash: TransactionHash): Promise<Transaction | undefined> {
+export async function deleteTransaction (user: UserProps, transaction: Transaction): Promise<void> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${projectId}/${transactionHash}`, {
-      headers: {
-        'x-api-key': user.apikey,
-        'x-user-id': user.email
-      }
-    })
-    return await response.json()
-  } catch (err) {
-    console.error(`Error occurred when trying to GET /transactions/${projectId}/${transactionHash}`)
-    console.error(err)
-  }
-}
-
-export async function deleteTransaction (user: UserProps, projectId: string, transactionHash: TransactionHash): Promise<void> {
-  try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions/${projectId}/${transactionHash}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions`, {
       method: 'DELETE',
+      mode: 'cors',
+      body: JSON.stringify(transaction),
       headers: {
+        'Content-Type': 'application/json',
         'x-api-key': user.apikey,
         'x-user-id': user.email
       }
     })
   } catch (err) {
-    console.error(`Error occurred when trying to DELETE /transactions/${projectId}/${transactionHash}`)
+    console.error('Error occurred when trying to DELETE /transactions')
     console.error(err)
   }
 }

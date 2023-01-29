@@ -19,27 +19,20 @@ export async function getAllContracts (user: UserProps, projectId: string): Prom
   return []
 }
 
-export async function getContract (user: UserProps, projectId: string, contractId: string): Promise<Contract | undefined> {
+export async function deleteContract (user: UserProps, contract: Contract): Promise<void> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts/${projectId}/${contractId}`)
-    return await response.json()
-  } catch (err) {
-    console.error(`Error occurred when trying to GET /contracts/${projectId}/${contractId}`)
-    console.error(err)
-  }
-}
-
-export async function deleteContract (user: UserProps, projectId: string, contractId: string): Promise<void> {
-  try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts/${projectId}/${contractId}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts`, {
       method: 'DELETE',
+      mode: 'cors',
+      body: JSON.stringify(contract),
       headers: {
+        'Content-Type': 'application/json',
         'x-api-key': user.apikey,
         'x-user-id': user.email
       }
     })
   } catch (err) {
-    console.error(`Error occurred when trying to DELETE /contracts/${projectId}/${contractId}`)
+    console.error('Error occurred when trying to DELETE /contracts')
     console.error(err)
   }
 }

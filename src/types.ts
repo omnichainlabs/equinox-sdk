@@ -9,10 +9,6 @@ export interface Apikey {
   totalTimeElapsed: number
 }
 
-export interface ApikeyInDatabase extends Apikey {
-  hash: string
-}
-
 export interface ApikeyResponse extends Apikey {
   apikey: string
 }
@@ -66,7 +62,7 @@ export enum Network {
 }
 
 export interface NFTMetadata {
-  contractId: string
+  contractLabel: string
   network: Network
   description: string
   primaryPayoutAddress: Address
@@ -127,7 +123,7 @@ export interface TransactionFromScan {
 }
 
 export interface Transaction extends TransactionFromScan {
-  contractId?: string
+  contractLabel?: string
   network: Network
   projectId: string
   proxyContractAddress?: Address
