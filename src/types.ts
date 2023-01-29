@@ -10,7 +10,13 @@ export interface Apikey {
   totalTimeElapsed: number
 };
 
-export interface ApikeyResponse extends Apikey {
+export interface ApikeyResponse {
+  userId: string
+  labelWithPrefix: string
+  expiration: ISOString
+  createdAt: ISOString
+  totalRequests: number
+  totalTimeElapsed: number
   apikey: string
 }
 
