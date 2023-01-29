@@ -4,19 +4,16 @@ export interface Apikey {
   userId: string
   labelWithPrefix: string
   expiration: ISOString
-  hash: string
   createdAt: ISOString
   totalRequests: number
   totalTimeElapsed: number
-};
+}
 
-export interface ApikeyResponse {
-  userId: string
-  labelWithPrefix: string
-  expiration: ISOString
-  createdAt: ISOString
-  totalRequests: number
-  totalTimeElapsed: number
+export interface ApikeyInDatabase extends Apikey {
+  hash: string
+}
+
+export interface ApikeyResponse extends Apikey {
   apikey: string
 }
 
@@ -29,9 +26,9 @@ export type BlockHash = string
 
 export interface Contract {
   projectId: string
-  contractId: string
   network: Network
   contractAddress: Address
+  label?: string
 }
 
 export interface GateCollection {
