@@ -1,5 +1,7 @@
 import {
+  Network,
   Transaction,
+  TransactionHash,
   UserProps
 } from '../types.js'
 
@@ -29,6 +31,31 @@ export async function getAllTransactions ({
     console.error(err)
   }
   return []
+}
+
+export async function getTransaction ({
+  user,
+  projectId,
+  network,
+  transactionHash
+}: {
+  user: UserProps
+  projectId: string
+  network: Network
+  transactionHash: TransactionHash
+}): Promise<void> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions?projectId=${projectId}&network=${network}&transactionHash=${transactionHash}`, {
+      headers: {
+        'x-api-key': user.apikey,
+        'x-user-id': user.email
+      }
+    })
+    return await response.json()
+  } catch (err) {
+    console.error('Error occurred when trying to GET /transactions')
+    console.error(err)
+  }
 }
 
 export async function deleteTransaction (user: UserProps, transaction: Transaction): Promise<void> {
