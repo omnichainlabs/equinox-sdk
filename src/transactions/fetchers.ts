@@ -89,7 +89,7 @@ export async function fetchTransactionFromContractAddress (projectId: string, co
     from: Address
   }
   const transactions = await fetchTransaction({ projectId, address, network, blockNumber })
-  if (transactions.length !== 1) {
+  if (transactions.length === 0) {
     return
   }
   return {
