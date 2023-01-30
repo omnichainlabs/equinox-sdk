@@ -1,5 +1,7 @@
-
-import { SCAN_MAP } from '../constants.js'
+import {
+  SCAN_MAP,
+  SCAN_RATE_LIMIT_INTERVAL_MS
+} from '../constants.js'
 import {
   Address,
   Network,
@@ -12,7 +14,6 @@ import {
 } from '../utils/index.js'
 
 const NUM_SCAN_PAGES = 10
-const RATE_LIMIT_INTERVAL_MS = 300
 
 export async function fetchBalanceByAddress (address: Address, network: Network): Promise<number | undefined> {
   const res = await fetch(
@@ -57,7 +58,7 @@ export async function fetchTransactionNetwork (projectId: string, address: Addre
         break
       }
       transactions.push(...newTransactions)
-      await sleep(RATE_LIMIT_INTERVAL_MS)
+      await sleep(SCAN_RATE_LIMIT_INTERVAL_MS)
     }
   } catch (error) {
     console.error(error)

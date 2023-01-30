@@ -3,6 +3,8 @@ import {
   ScanInfo
 } from './types.js'
 
+export const SCAN_RATE_LIMIT_INTERVAL_MS = 300
+
 export const SCAN_MAP: Record<Network, ScanInfo> = {
   [Network.Mumbai]: {
     apiUrl: 'https://api-testnet.polygonscan.com',

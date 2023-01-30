@@ -50,15 +50,15 @@ export interface Project {
 }
 
 export enum Network {
-  Ethereum = 'ethereum',
-  Goerli = 'goerli',
-  Sepolia = 'sepolia',
-  Polygon = 'polygon',
-  Mumbai = 'mumbai',
-  Avalanche = 'avalanche',
-  Fuji = 'fuji',
-  Optimism = 'optimism',
-  OptimismGoerli = 'optimism-goerli'
+  Ethereum = 'Ethereum',
+  Goerli = 'Goerli',
+  Sepolia = 'Sepolia',
+  Polygon = 'Polygon',
+  Mumbai = 'Mumbai',
+  Avalanche = 'Avalanche',
+  Fuji = 'Fuji',
+  Optimism = 'Optimism',
+  OptimismGoerli = 'OptimismGoerli'
 }
 
 export interface NFTMetadata {
