@@ -5,7 +5,8 @@ import {
   ISOString,
   Network,
   Transaction,
-  TransactionHash
+  TransactionHash,
+  TransactionStatus
 } from '../types.js'
 
 export * from './alchemy.js'
@@ -13,6 +14,7 @@ export * from './alchemy.js'
 export const S_PER_DAY: number = 24 * 60 * 60
 export const MS_PER_S: number = 1000
 export const MS_PER_DAY: number = MS_PER_S * S_PER_DAY
+export const WEI_PER_ETH: number = 1e9
 
 export function abbreviateAddress (address: Address): string {
   return `${address.slice(0, 6)}..${address.slice(address.length - 4)}`
@@ -87,5 +89,22 @@ export function normalizeAddressOrProxyAddress (transaction: Transaction): Addre
   }
   if (transaction.proxyContractAddress !== undefined && transaction.proxyContractAddress !== '') {
     return normalizeAddress(transaction.proxyContractAddress)
+  }
+}
+
+export function weiToEth (wei: number): number {
+  return wei / WEI_PER_ETH
+}
+
+export function ethToWei (eth: number): number {
+  return eth * WEI_PER_ETH
+}
+
+export function transactionStatusToString (transactionStatus: TransactionStatus, pastTense: boolean): string {
+  switch (transactionStatus) {
+    case TransactionStatus.Failure:
+      return pastTense ? 'Failed' : 'Failure'
+    case TransactionStatus.Success:
+      return pastTense ? 'Succeeded' : 'Success'
   }
 }
