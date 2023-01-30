@@ -72,8 +72,9 @@ export interface NFTMetadata {
 
 export interface ScanInfo {
   apiUrl: string
-  explorerUrl: string
   apiKey: string
+  explorerUrl: string
+  explorerName: string
 }
 
 export interface ScanTransaction {

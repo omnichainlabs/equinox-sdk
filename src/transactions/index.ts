@@ -43,7 +43,7 @@ export async function getTransaction ({
   projectId: string
   network: Network
   transactionHash: TransactionHash
-}): Promise<void> {
+}): Promise<Transaction | undefined> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions?projectId=${projectId}&network=${network}&transactionHash=${transactionHash}`, {
       headers: {
