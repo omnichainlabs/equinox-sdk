@@ -1,5 +1,6 @@
 import {
   Contract,
+  ContractResponse,
   TransactionHash,
   UserProps
 } from '../types.js'
@@ -52,7 +53,7 @@ export async function deleteContract ({
   }
 }
 
-export async function postContract (user: UserProps, contract: Contract): Promise<Contract | undefined> {
+export async function postContract (user: UserProps, contract: Contract): Promise<ContractResponse | undefined> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts`, {
       method: 'POST',

@@ -27,6 +27,10 @@ export interface Contract {
   label?: string
 }
 
+export interface ContractResponse extends Contract {
+  transactionHash?: TransactionHash
+}
+
 export interface GateCollection {
   contractAddress: Address
   imageUrl: string

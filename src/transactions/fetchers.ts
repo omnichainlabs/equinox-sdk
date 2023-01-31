@@ -10,7 +10,8 @@ import {
 } from '../types.js'
 import {
   normalizeAddress,
-  sleep
+  sleep,
+  weiToEth
 } from '../utils/index.js'
 
 const NUM_SCAN_PAGES = 10
@@ -21,8 +22,7 @@ export async function fetchBalanceByAddress (address: Address, network: Network)
   )
   const data = await res.json()
   if (data.status === '1') {
-    const balance: number = Number((Number(data.result) / 1000000000000000000).toFixed(2))
-    return balance
+    return Number(weiToEth(Number(data.result)).toFixed(2))
   }
 }
 

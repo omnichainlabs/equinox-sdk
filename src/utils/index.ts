@@ -14,7 +14,8 @@ export * from './alchemy.js'
 export const S_PER_DAY: number = 24 * 60 * 60
 export const MS_PER_S: number = 1000
 export const MS_PER_DAY: number = MS_PER_S * S_PER_DAY
-export const WEI_PER_ETH: number = 1e9
+export const GWEI_PER_ETH: number = 1e9
+export const WEI_PER_GWEI: number = 1e9
 
 export function abbreviateAddress (address: Address): string {
   return `${address.slice(0, 6)}..${address.slice(address.length - 4)}`
@@ -92,12 +93,28 @@ export function normalizeAddressOrProxyAddress (transaction: Transaction): Addre
   }
 }
 
+export function weiToGwei (wei: number): number {
+  return wei / WEI_PER_GWEI
+}
+
+export function gweiToEth (gwei: number): number {
+  return gwei / GWEI_PER_ETH
+}
+
 export function weiToEth (wei: number): number {
-  return wei / WEI_PER_ETH
+  return gweiToEth(weiToGwei(wei))
+}
+
+export function gweiToWei (gwei: number): number {
+  return gwei * WEI_PER_GWEI
+}
+
+export function ethToGwei (eth: number): number {
+  return eth * GWEI_PER_ETH
 }
 
 export function ethToWei (eth: number): number {
-  return eth * WEI_PER_ETH
+  return gweiToWei(ethToGwei(eth))
 }
 
 export function transactionStatusToString (transactionStatus: TransactionStatus, pastTense: boolean): string {
