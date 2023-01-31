@@ -10,6 +10,7 @@ import {
 } from '../types.js'
 
 export * from './alchemy.js'
+export * from './thirdweb.js'
 
 export const S_PER_DAY: number = 24 * 60 * 60
 export const MS_PER_S: number = 1000
