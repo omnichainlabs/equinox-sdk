@@ -1,5 +1,5 @@
 import {
-  SCAN_MAP,
+  NETWORK_MAP,
   SCAN_RATE_LIMIT_INTERVAL_MS
 } from '../constants.js'
 import {
@@ -18,7 +18,7 @@ const NUM_SCAN_PAGES = 10
 
 export async function fetchBalanceByAddress (address: Address, network: Network): Promise<number | undefined> {
   const res = await fetch(
-    `${SCAN_MAP[network].apiUrl}/api?module=account&action=balance&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
+    `${NETWORK_MAP[network].scanApiUrl}/api?module=account&action=balance&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${NETWORK_MAP[network].scanApiKey}`
   )
   const data = await res.json()
   if (data.status === '1') {
@@ -40,7 +40,7 @@ export async function fetchTransaction ({
   blockNumber?: number
 }): Promise<Transaction[]> {
   const res = await fetch(
-    `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlist&address=${address}&startblock=${blockNumber ?? 0}&endblock=${blockNumber ?? 99999999}&page=${page ?? 1}&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
+    `${NETWORK_MAP[network].scanApiUrl}/api?module=account&action=txlist&address=${address}&startblock=${blockNumber ?? 0}&endblock=${blockNumber ?? 99999999}&page=${page ?? 1}&offset=10&sort=asc&apikey=${NETWORK_MAP[network].scanApiKey}`
   )
   const scanTransactions = await res.json()
   if (scanTransactions.status === '1' && Array.isArray(scanTransactions.result)) {
@@ -74,7 +74,7 @@ export async function fetchAllTransactions (projectId: string, address: Address)
 
 export async function fetchTransactionFromContractAddress (projectId: string, contractAddress: Address, network: Network): Promise<Transaction | undefined> {
   const res = await fetch(
-    `${SCAN_MAP[network].apiUrl}/api?module=account&action=txlistinternal&address=${contractAddress}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${SCAN_MAP[network].apiKey}`
+    `${NETWORK_MAP[network].scanApiUrl}/api?module=account&action=txlistinternal&address=${contractAddress}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${NETWORK_MAP[network].scanApiKey}`
   )
   const data = await res.json()
   if (data.status !== '1') {

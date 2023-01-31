@@ -1,3 +1,5 @@
+import { Network as AlchemyNetwork } from 'alchemy-sdk';
+
 export type Address = string
 
 export interface Apikey {
@@ -73,6 +75,15 @@ export enum Network {
   OptimismGoerli = 'OptimismGoerli'
 }
 
+export interface NetworkInfo {
+  alchemyApiKey?: string
+  alchemyNetwork?: AlchemyNetwork
+  scanApiUrl: string
+  scanApiKey: string
+  scanUrl: string
+  scanName: string
+}
+
 export interface NFTMetadata {
   contractLabel: string
   network: Network
@@ -81,13 +92,6 @@ export interface NFTMetadata {
   secondaryPayoutAddress: Address
   royaltyPercentage: number
 };
-
-export interface ScanInfo {
-  apiUrl: string
-  apiKey: string
-  explorerUrl: string
-  explorerName: string
-}
 
 export interface ScanTransaction {
   blockHash: BlockHash

@@ -1,17 +1,25 @@
+import { Alchemy } from 'alchemy-sdk'
+
 import {
-  Alchemy,
-  Network
-} from 'alchemy-sdk'
+  NETWORK_MAP,
+  TESTNET_NETWORKS
+} from '../constants.js'
+import { Network } from '../types.js'
 
-let alchemySingletonObject: Alchemy
+const alchemySingletons: Partial<Record<Network, Alchemy>> = {}
 
-export const alchemySingleton = (): Alchemy => {
+const alchemySingleton = (network: Network): Alchemy => {
+  if (!TESTNET_NETWORKS.includes(network)) {
+    throw new Error('Currently, only testnet networks are supported.')
+  }
   const alchemySettings = {
-    apiKey: process.env.ALCHEMY_API_KEY,
-    network: Network.MATIC_MUMBAI
+    apiKey: NETWORK_MAP[network].alchemyApiKey,
+    network: NETWORK_MAP[network].alchemyNetwork
   }
-  if (alchemySingletonObject === undefined) {
-    alchemySingletonObject = new Alchemy(alchemySettings)
+  if (alchemySingletons[network] === undefined) {
+    alchemySingletons[network] = new Alchemy(alchemySettings)
   }
-  return alchemySingletonObject
+  return alchemySingletons[network]!
 }
+
+export default alchemySingleton

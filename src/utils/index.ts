@@ -1,5 +1,5 @@
 import { Network as EthersNetwork } from '@ethersproject/networks'
-import { SCAN_MAP } from '../constants.js'
+import { NETWORK_MAP } from '../constants.js'
 import {
   Address,
   ISOString,
@@ -76,9 +76,9 @@ export function getDetailsPageLink ({
   transactionHash?: TransactionHash
 }): string {
   if (address !== undefined) {
-    return `${SCAN_MAP[network].explorerUrl}/address/${address}`
+    return `${NETWORK_MAP[network].scanUrl}/address/${address}`
   } else if (transactionHash !== undefined) {
-    return `${SCAN_MAP[network].explorerUrl}/tx/${transactionHash}`
+    return `${NETWORK_MAP[network].scanUrl}/tx/${transactionHash}`
   } else {
     return ''
   }
