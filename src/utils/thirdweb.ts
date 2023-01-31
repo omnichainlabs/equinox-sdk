@@ -1,6 +1,9 @@
-import { ThirdwebSDK } from '@thirdweb-dev/sdk'
-import { TESTNET_NETWORKS } from '../constants.js'
-import { Network } from '../types.js'
+import { ThirdwebSDK } from '@thirdweb-dev/sdk';
+import {
+  NETWORK_MAP,
+  TESTNET_NETWORKS,
+} from '../constants.js';
+import { Network } from '../types.js';
 
 const thirdwebSingletons: Partial<Record<Network, ThirdwebSDK>> = {}
 
@@ -11,7 +14,7 @@ const thirdwebSingleton = (network: Network): ThirdwebSDK => {
   if (thirdwebSingletons[network] === undefined) {
     thirdwebSingletons[network] = ThirdwebSDK.fromPrivateKey(
       process.env.THIRDWEB_PRIVATE_KEY,
-      network
+      NETWORK_MAP[network].thirdwebNetwork!,
     )
   }
   return thirdwebSingletons[network]!
