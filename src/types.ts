@@ -10,7 +10,7 @@ export interface Apikey {
 }
 
 export interface ApikeyResponse extends Apikey {
-  apikey: string
+  apikey: UUID
 }
 
 export interface ApikeyRequest {
@@ -19,6 +19,10 @@ export interface ApikeyRequest {
 }
 
 export type BlockHash = string
+
+export interface Claim {
+  claimId: UUID
+}
 
 export interface Contract {
   projectId: string
@@ -149,6 +153,8 @@ export interface UserProps {
   role: string
   apikey: string
 }
+
+export type UUID = string;
 
 export interface Wallet {
   projectId: string
