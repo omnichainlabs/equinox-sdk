@@ -22,6 +22,10 @@ export type BlockHash = string
 
 export interface Claim {
   claimId: UUID
+  network: Network
+  contractAddress: Address
+  tokenId: string
+  isClaimed: boolean
 }
 
 export interface Contract {
@@ -154,7 +158,7 @@ export interface UserProps {
   apikey: string
 }
 
-export type UUID = string;
+export type UUID = string
 
 export interface Wallet {
   projectId: string
