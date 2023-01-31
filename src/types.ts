@@ -1,4 +1,5 @@
-import { Network as AlchemyNetwork } from 'alchemy-sdk';
+import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk'
+import { Network as AlchemyNetwork } from 'alchemy-sdk'
 
 export type Address = string
 
@@ -82,6 +83,7 @@ export interface NetworkInfo {
   scanApiKey: string
   scanUrl: string
   scanName: string
+  thirdwebNetwork?: ThirdwebNetwork
 }
 
 export interface NFTMetadata {

@@ -1,9 +1,9 @@
-import { Network as AlchemyNetwork } from 'alchemy-sdk';
+import { Network as AlchemyNetwork } from 'alchemy-sdk'
 
 import {
   Network,
-  NetworkInfo,
-} from './types.js';
+  NetworkInfo
+} from './types.js'
 
 export const SCAN_RATE_LIMIT_INTERVAL_MS = 300
 
@@ -21,6 +21,7 @@ export const NETWORK_MAP: Record<Network, NetworkInfo> = {
     scanApiKey: process.env.NEXT_PUBLIC_SCAN_ETHEREUM_KEY,
     scanUrl: 'https://etherscan.io',
     scanName: 'Etherscan',
+    thirdwebNetwork: 'ethereum'
   },
   [Network.Goerli]: {
     alchemyApiKey: process.env.ALCHEMY_GOERLI_KEY,
@@ -29,6 +30,7 @@ export const NETWORK_MAP: Record<Network, NetworkInfo> = {
     scanApiKey: process.env.NEXT_PUBLIC_SCAN_GOERLI_KEY,
     scanUrl: 'https://goerli.etherscan.io',
     scanName: 'Etherscan',
+    thirdwebNetwork: 'goerli'
   },
   [Network.Sepolia]: {
     scanApiUrl: 'https://api-sepolia.etherscan.io',
@@ -43,6 +45,7 @@ export const NETWORK_MAP: Record<Network, NetworkInfo> = {
     scanApiKey: process.env.NEXT_PUBLIC_SCAN_POLYGON_KEY,
     scanUrl: 'https://polygonscan.com',
     scanName: 'PolygonScan',
+    thirdwebNetwork: 'polygon'
   },
   [Network.Mumbai]: {
     alchemyApiKey: process.env.ALCHEMY_MUMBAI_KEY,
@@ -51,18 +54,21 @@ export const NETWORK_MAP: Record<Network, NetworkInfo> = {
     scanApiKey: process.env.NEXT_PUBLIC_SCAN_MUMBAI_KEY,
     scanUrl: 'https://mumbai.polygonscan.com',
     scanName: 'PolygonScan',
+    thirdwebNetwork: 'mumbai'
   },
   [Network.Avalanche]: {
     scanApiUrl: 'https://api.snowtrace.io',
     scanApiKey: process.env.NEXT_PUBLIC_SCAN_AVALANCHE_KEY,
     scanUrl: 'https://snowtrace.io',
     scanName: 'Snowtrace',
+    thirdwebNetwork: 'avalanche'
   },
   [Network.Fuji]: {
     scanApiUrl: 'https://api-testnet.snowtrace.io',
     scanApiKey: process.env.NEXT_PUBLIC_SCAN_FUJI_KEY,
     scanUrl: 'https://testnet.snowtrace.io',
     scanName: 'Snowtrace',
+    thirdwebNetwork: 'avalanche-fuji'
   },
   [Network.Optimism]: {
     alchemyApiKey: process.env.ALCHEMY_OPTIMISM_KEY,
@@ -71,6 +77,7 @@ export const NETWORK_MAP: Record<Network, NetworkInfo> = {
     scanApiKey: process.env.NEXT_PUBLIC_SCAN_OPTIMISM_KEY,
     scanUrl: 'https://optimistic.etherscan.io',
     scanName: 'Etherscan',
+    thirdwebNetwork: 'optimism'
   },
   [Network.OptimismGoerli]: {
     alchemyApiKey: process.env.ALCHEMY_OPTIMISM_GOERLI_KEY,
@@ -79,5 +86,6 @@ export const NETWORK_MAP: Record<Network, NetworkInfo> = {
     scanApiKey: process.env.NEXT_PUBLIC_SCAN_OPTIMISM_GOERLI_KEY,
     scanUrl: 'https://goerli-optimism.etherscan.io',
     scanName: 'Etherscan',
+    thirdwebNetwork: 'optimism-goerli'
   }
 }

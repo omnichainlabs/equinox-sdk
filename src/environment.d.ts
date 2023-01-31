@@ -5,8 +5,6 @@ namespace NodeJS {
     ALCHEMY_GOERLI_KEY: string;
     ALCHEMY_POLYGON_KEY: string;
     ALCHEMY_MUMBAI_KEY: string;
-    ALCHEMY_AVALANCHE_KEY: string;
-    ALCHEMY_FUJI_KEY: string;
     ALCHEMY_OPTIMISM_KEY: string;
     ALCHEMY_OPTIMISM_GOERLI_KEY: string;
     NEXT_PUBLIC_BEANSTALK_SERVER_URL: string;
@@ -19,5 +17,6 @@ namespace NodeJS {
     NEXT_PUBLIC_SCAN_FUJI_KEY: string;
     NEXT_PUBLIC_SCAN_OPTIMISM_KEY: string;
     NEXT_PUBLIC_SCAN_OPTIMISM_GOERLI_KEY: string;
+    THIRDWEB_PRIVATE_KEY: string;
   }
 }
