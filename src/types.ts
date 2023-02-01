@@ -27,7 +27,7 @@ export interface Claim {
   claimId: UUID
   network: Network
   contractAddress: Address
-  tokenId: string
+  tokenId?: string
   isClaimed: boolean
 }
 
