@@ -8,7 +8,7 @@ import { Network } from '../types.js'
 
 const alchemySingletons: Partial<Record<Network, Alchemy>> = {}
 
-const alchemySingleton = (network: Network): Alchemy => {
+export const alchemySingleton = (network: Network): Alchemy => {
   if (!TESTNET_NETWORKS.includes(network)) {
     throw new Error('Currently, only testnet networks are supported.')
   }
@@ -21,5 +21,3 @@ const alchemySingleton = (network: Network): Alchemy => {
   }
   return alchemySingletons[network]!
 }
-
-export default alchemySingleton

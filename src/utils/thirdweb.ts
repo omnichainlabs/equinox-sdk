@@ -7,7 +7,7 @@ import { Network } from '../types.js'
 
 const thirdwebSingletons: Partial<Record<Network, ThirdwebSDK>> = {}
 
-const thirdwebSingleton = (network: Network): ThirdwebSDK => {
+export const thirdwebSingleton = (network: Network): ThirdwebSDK => {
   if (!TESTNET_NETWORKS.includes(network)) {
     throw new Error('Currently, only testnet networks are supported.')
   }
@@ -19,5 +19,3 @@ const thirdwebSingleton = (network: Network): ThirdwebSDK => {
   }
   return thirdwebSingletons[network]!
 }
-
-export default thirdwebSingleton
