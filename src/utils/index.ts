@@ -21,7 +21,7 @@ export const WEI_PER_GWEI: number = 1e9
 export async function parseFetchResponse (response: Response): Promise<any> {
   const result = await response.json()
   if (response.status < 200 || response.status >= 300) {
-    throw new Error(result)
+    throw new Error(JSON.stringify(result))
   }
   return result
 }
