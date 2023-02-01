@@ -1,3 +1,4 @@
+import { parseFetchResponse } from '../index.js'
 import {
   GateItem,
   UserProps
@@ -11,7 +12,7 @@ export async function getAllGates (user: UserProps): Promise<GateItem[]> {
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to GET /gates')
     console.error(err)
@@ -22,7 +23,7 @@ export async function getAllGates (user: UserProps): Promise<GateItem[]> {
 export async function getGate (userId: string, gateId: string): Promise<GateItem | undefined> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates/${userId}/${gateId}`)
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error(`Error occurred when trying to GET /gates/${userId}/${gateId}`)
     console.error(err)
@@ -31,13 +32,14 @@ export async function getGate (userId: string, gateId: string): Promise<GateItem
 
 export async function deleteGate (user: UserProps, gateId: string): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates/${gateId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates/${gateId}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
       }
     })
+    await parseFetchResponse(response)
   } catch (err) {
     console.error(`Error occurred when trying to DELETE /gates/${gateId}`)
     console.error(err)
@@ -56,7 +58,7 @@ export async function postGate (user: UserProps, gate: GateItem): Promise<GateIt
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to POST /gates')
     console.error(err)

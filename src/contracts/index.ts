@@ -1,3 +1,4 @@
+import { parseFetchResponse } from '../index.js'
 import {
   Contract,
   ContractResponse,
@@ -13,7 +14,7 @@ export async function getAllContracts (user: UserProps, projectId: string): Prom
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error(`Error occurred when trying to GET /contracts/${projectId}`)
     console.error(err)
@@ -33,7 +34,7 @@ export async function deleteContract ({
   transactionHash?: TransactionHash
 }): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/contracts`, {
       method: 'DELETE',
       mode: 'cors',
       body: JSON.stringify({
@@ -47,6 +48,7 @@ export async function deleteContract ({
         'x-user-id': user.email
       }
     })
+    await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to DELETE /contracts')
     console.error(err)
@@ -65,7 +67,7 @@ export async function postContract (user: UserProps, contract: Contract): Promis
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to POST /contracts')
     console.error(err)

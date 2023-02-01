@@ -1,3 +1,4 @@
+import { parseFetchResponse } from '../index.js'
 import {
   Network,
   Transaction,
@@ -25,7 +26,7 @@ export async function getAllTransactions ({
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error(`Error occurred when trying to GET /transactions/${projectId}`)
     console.error(err)
@@ -51,7 +52,7 @@ export async function getTransaction ({
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to GET /transactions')
     console.error(err)
@@ -60,7 +61,7 @@ export async function getTransaction ({
 
 export async function deleteTransaction (user: UserProps, transaction: Transaction): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/transactions`, {
       method: 'DELETE',
       mode: 'cors',
       body: JSON.stringify(transaction),
@@ -70,6 +71,7 @@ export async function deleteTransaction (user: UserProps, transaction: Transacti
         'x-user-id': user.email
       }
     })
+    await response.json()
   } catch (err) {
     console.error('Error occurred when trying to DELETE /transactions')
     console.error(err)

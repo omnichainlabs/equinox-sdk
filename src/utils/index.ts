@@ -18,6 +18,14 @@ export const MS_PER_DAY: number = MS_PER_S * S_PER_DAY
 export const GWEI_PER_ETH: number = 1e9
 export const WEI_PER_GWEI: number = 1e9
 
+export async function parseFetchResponse (response: Response): Promise<any> {
+  const result = await response.json()
+  if (response.status < 200 || response.status >= 300) {
+    throw new Error(result)
+  }
+  return result
+}
+
 export function abbreviateAddress (address: Address): string {
   return `${address.slice(0, 6)}..${address.slice(address.length - 4)}`
 }

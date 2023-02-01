@@ -1,3 +1,4 @@
+import { parseFetchResponse } from '../index.js'
 import {
   Apikey,
   ApikeyRequest,
@@ -13,7 +14,7 @@ export async function getAllApikeys (user: UserProps): Promise<Apikey[]> {
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to GET /apikeys')
     console.error(err)
@@ -23,7 +24,7 @@ export async function getAllApikeys (user: UserProps): Promise<Apikey[]> {
 
 export async function deleteApikey (user: UserProps, apikey: Apikey): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/apikeys`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/apikeys`, {
       method: 'DELETE',
       mode: 'cors',
       body: JSON.stringify(apikey),
@@ -33,6 +34,7 @@ export async function deleteApikey (user: UserProps, apikey: Apikey): Promise<vo
         'x-user-id': user.email
       }
     })
+    await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to DELETE /apikeys')
     console.error(err)
@@ -51,7 +53,7 @@ export async function postApikey (user: UserProps, apikeyRequest: ApikeyRequest)
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to POST /apikeys')
     console.error(err)

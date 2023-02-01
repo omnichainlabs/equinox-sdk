@@ -1,3 +1,4 @@
+import { parseFetchResponse } from '../index.js'
 import {
   Project,
   UserProps
@@ -11,7 +12,7 @@ export async function getAllProjects (user: UserProps): Promise<Project[]> {
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to GET /projects')
     console.error(err)
@@ -27,7 +28,7 @@ export async function getProject (user: UserProps, projectId: string): Promise<P
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error(`Error occurred when trying to GET /projects/${projectId}`)
     console.error(err)
@@ -36,13 +37,14 @@ export async function getProject (user: UserProps, projectId: string): Promise<P
 
 export async function deleteProject (user: UserProps, projectId: string): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${projectId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/projects/${projectId}`, {
       method: 'DELETE',
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
       }
     })
+    await parseFetchResponse(response)
   } catch (err) {
     console.error(`Error occurred when trying to DELETE /projects/${projectId}`)
     console.error(err)
@@ -61,7 +63,7 @@ export async function postProject (user: UserProps, project: Project): Promise<P
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to POST /projects')
     console.error(err)

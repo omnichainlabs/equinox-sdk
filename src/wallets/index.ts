@@ -1,3 +1,4 @@
+import { parseFetchResponse } from '../index.js'
 import {
   UserProps,
   Wallet
@@ -11,7 +12,7 @@ export async function getAllWallets (user: UserProps, projectId: string): Promis
         'x-user-id': user.email
       }
     })
-    return await response.json()
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error(`Error occurred when trying to GET /wallets/${projectId}`)
     console.error(err)
@@ -21,7 +22,7 @@ export async function getAllWallets (user: UserProps, projectId: string): Promis
 
 export async function deleteWallet (user: UserProps, wallet: Wallet): Promise<void> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets`, {
       method: 'DELETE',
       mode: 'cors',
       body: JSON.stringify(wallet),
@@ -31,15 +32,16 @@ export async function deleteWallet (user: UserProps, wallet: Wallet): Promise<vo
         'x-user-id': user.email
       }
     })
+    await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to DELETE /wallets')
     console.error(err)
   }
 }
 
-export async function postWallet (user: UserProps, wallet: Wallet): Promise<void> {
+export async function postWallet (user: UserProps, wallet: Wallet): Promise<Wallet | undefined> {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/wallets`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(wallet),
@@ -49,6 +51,7 @@ export async function postWallet (user: UserProps, wallet: Wallet): Promise<void
         'x-user-id': user.email
       }
     })
+    return await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to POST /wallets')
     console.error(err)

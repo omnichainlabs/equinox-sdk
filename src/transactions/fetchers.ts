@@ -10,6 +10,7 @@ import {
 } from '../types.js'
 import {
   normalizeAddress,
+  parseFetchResponse,
   sleep,
   weiToEth
 } from '../utils/index.js'
@@ -17,11 +18,11 @@ import {
 const NUM_SCAN_PAGES = 10
 
 export async function fetchBalanceByAddress (address: Address, network: Network): Promise<number | undefined> {
-  const res = await fetch(
+  const response = await fetch(
     `${NETWORK_MAP[network].scanApiUrl}/api?module=account&action=balance&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${NETWORK_MAP[network].scanApiKey}`
   )
-  const data = await res.json()
-  if (data.status === '1') {
+  const data = await parseFetchResponse(response)
+  if (data !== undefined && data.status === '1') {
     return Number(weiToEth(Number(data.result)).toFixed(2))
   }
 }
@@ -39,11 +40,11 @@ export async function fetchTransaction ({
   page?: number
   blockNumber?: number
 }): Promise<Transaction[]> {
-  const res = await fetch(
+  const response = await fetch(
     `${NETWORK_MAP[network].scanApiUrl}/api?module=account&action=txlist&address=${address}&startblock=${blockNumber ?? 0}&endblock=${blockNumber ?? 99999999}&page=${page ?? 1}&offset=10&sort=asc&apikey=${NETWORK_MAP[network].scanApiKey}`
   )
-  const scanTransactions = await res.json()
-  if (scanTransactions.status === '1' && Array.isArray(scanTransactions.result)) {
+  const scanTransactions = await parseFetchResponse(response)
+  if (scanTransactions !== undefined && scanTransactions.status === '1' && Array.isArray(scanTransactions.result)) {
     return scanTransactions.result.map((scanTransaction: ScanTransaction): Transaction => scanTransactionToTransaction(projectId, network, scanTransaction))
   }
   return []
@@ -73,11 +74,11 @@ export async function fetchAllTransactions (projectId: string, address: Address)
 }
 
 export async function fetchTransactionFromContractAddress (projectId: string, contractAddress: Address, network: Network): Promise<Transaction | undefined> {
-  const res = await fetch(
+  const response = await fetch(
     `${NETWORK_MAP[network].scanApiUrl}/api?module=account&action=txlistinternal&address=${contractAddress}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${NETWORK_MAP[network].scanApiKey}`
   )
-  const data = await res.json()
-  if (data.status !== '1') {
+  const data = await parseFetchResponse(response)
+  if (data !== undefined && data.status !== '1') {
     return
   }
 
