@@ -35,6 +35,7 @@ export interface Contract {
   projectId: string
   network: Network
   contractAddress: Address
+  thirdwebContractType?: ThirdwebContractType
   label?: string
 }
 
@@ -116,6 +117,37 @@ export interface ScanTransaction {
   transactionIndex: string
   txreceipt_status: string
   value: string
+}
+
+export interface ThirdwebContract {
+  title: string
+  description: string
+  content: string
+  method: ThirdwebContractType
+  standard: ThirdwebTokenStandard
+}
+
+export enum ThirdwebContractType {
+  Edition = 'Edition',
+  EditionDrop = 'EditionDrop',
+  Marketplace = 'Marketplace',
+  NFTCollection = 'NFTCollection',
+  NFTDrop = 'NFTDrop',
+  Pack = 'Pack',
+  SignatureDrop = 'SignatureDrop',
+  Split = 'Split',
+  Token = 'Token',
+  TokenDrop = 'TokenDrop',
+  Vote = 'Vote'
+}
+
+export enum ThirdwebTokenStandard {
+  ERC721 = 'ERC721',
+  ERC1155 = 'ERC1155',
+  ERC20 = 'ERC20',
+  Marketplace = 'Marketplace',
+  Split = 'Split',
+  Vote = 'Vote'
 }
 
 export interface TransactionFromScan {
