@@ -7,23 +7,21 @@ import {
 } from '../types.js'
 
 export async function getDropMetadata ({
-  user,
   projectId,
   network,
   contractAddress,
   id
 }: {
-  user: UserProps
   projectId: string
   network: Network
   contractAddress: Address
   id: number
 }): Promise<DropMetadata | undefined> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/nfts/${projectId}?network=${network}&contractAddress=${contractAddress}&id=${id}`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/nfts/${projectId}/${network}/${contractAddress}/${id}`)
     return await parseFetchResponse(response)
   } catch (err) {
-    console.error(`Error occurred when trying to GET /nfts/${projectId}`)
+    console.error(`Error occurred when trying to GET /nfts/${projectId}/${network}/${contractAddress}/${id}`)
     console.error(err)
   }
 }
