@@ -1,5 +1,5 @@
-import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk'
-import { Network as AlchemyNetwork } from 'alchemy-sdk'
+import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk';
+import { Network as AlchemyNetwork } from 'alchemy-sdk';
 
 export type Address = string
 
@@ -55,9 +55,10 @@ export interface DropMetadata {
   projectId: string
   network: Network
   contractAddress: Address
+  dropId: number
   name?: string
   description?: string
-  image?: File
+  image?: string | File
   external_url?: string
   animation_url?: string
   background_color?: string
