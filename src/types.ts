@@ -57,11 +57,7 @@ export interface Customer {
   wallets: Wallet[]
 }
 
-export interface DropMetadata {
-  projectId: string
-  network: Network
-  contractAddress: Address
-  id: number
+export interface DropMetadata extends DropMetadataUrlParams {
   name?: string
   description?: string
   image?: string | File
@@ -70,6 +66,13 @@ export interface DropMetadata {
   background_color?: string
   properties?: Record<string, unknown>
   attributes?: Record<string, unknown>
+}
+
+export interface DropMetadataUrlParams {
+  projectId: string
+  network: Network
+  contractAddress: Address
+  id: number
 }
 
 export type Email = string
@@ -93,7 +96,7 @@ export type ISOString = string
 
 export interface Project {
   projectId: string
-  adminUserIds: string[]
+  adminUserIds: Email[]
 }
 
 export enum Network {
