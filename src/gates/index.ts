@@ -1,5 +1,6 @@
 import { parseFetchResponse } from '../index.js'
 import {
+  Email,
   GateItem,
   UserProps
 } from '../types.js'
@@ -20,7 +21,7 @@ export async function getAllGates (user: UserProps): Promise<GateItem[]> {
   return []
 }
 
-export async function getGate (userId: string, gateId: string): Promise<GateItem | undefined> {
+export async function getGate (userId: Email, gateId: string): Promise<GateItem | undefined> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/gates/${userId}/${gateId}`)
     return await parseFetchResponse(response)

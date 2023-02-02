@@ -1,10 +1,10 @@
-import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk';
-import { Network as AlchemyNetwork } from 'alchemy-sdk';
+import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk'
+import { Network as AlchemyNetwork } from 'alchemy-sdk'
 
 export type Address = string
 
 export interface Apikey {
-  userId: string
+  userId: Email
   labelWithPrefix: string
   expiration: ISOString
   createdAt: ISOString
@@ -51,6 +51,12 @@ export interface ContractResponse extends Contract {
   transactionHash?: TransactionHash
 }
 
+export interface Customer {
+  projectId: string
+  customerId: Email
+  wallets: Wallet[]
+}
+
 export interface DropMetadata {
   projectId: string
   network: Network
@@ -62,13 +68,11 @@ export interface DropMetadata {
   external_url?: string
   animation_url?: string
   background_color?: string
-  properties?: {
-    [x: string]: unknown
-  }
-  attributes?: {
-    [x: string]: unknown
-  }
+  properties?: Record<string, unknown>
+  attributes?: Record<string, unknown>
 }
+
+export type Email = string
 
 export interface GateCollection {
   contractAddress: Address
@@ -78,7 +82,7 @@ export interface GateCollection {
 };
 
 export interface GateItem {
-  userId: string
+  userId: Email
   gateId: string
   content: string
   mustHaveAll: boolean
