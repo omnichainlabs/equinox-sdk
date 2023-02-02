@@ -1,5 +1,5 @@
-import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk';
-import { Network as AlchemyNetwork } from 'alchemy-sdk';
+import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk'
+import { Network as AlchemyNetwork } from 'alchemy-sdk'
 
 export type Address = string
 
@@ -24,11 +24,12 @@ export interface ApikeyRequest {
 export type BlockHash = string
 
 export interface Claim {
+  projectId: string
   claimId: UUID
   network: Network
   contractAddress: Address
   tokenId?: string
-  isClaimed: boolean
+  claimedWalletAddress: Address
 }
 
 export interface Contract {
