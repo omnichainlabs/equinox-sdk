@@ -1,5 +1,5 @@
-import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk'
-import { Network as AlchemyNetwork } from 'alchemy-sdk'
+import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk';
+import { Network as AlchemyNetwork } from 'alchemy-sdk';
 
 export type Address = string
 
@@ -178,6 +178,7 @@ export interface Transaction extends TransactionFromScan {
   network: Network
   projectId: string
   proxyContractAddress?: Address
+  thirdwebContractType?: ThirdwebContractType
 }
 
 export type TransactionHash = string
