@@ -1,5 +1,5 @@
-import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk'
-import { Network as AlchemyNetwork } from 'alchemy-sdk'
+import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk';
+import { Network as AlchemyNetwork } from 'alchemy-sdk';
 
 export type Address = string
 
@@ -62,8 +62,12 @@ export interface DropMetadata {
   external_url?: string
   animation_url?: string
   background_color?: string
-  properties?: any[]
-  attributes?: any[]
+  properties?: {
+    [x: string]: unknown
+  }
+  attributes?: {
+    [x: string]: unknown
+  }
 }
 
 export interface GateCollection {
