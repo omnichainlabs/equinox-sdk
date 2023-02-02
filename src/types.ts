@@ -51,6 +51,20 @@ export interface ContractResponse extends Contract {
   transactionHash?: TransactionHash
 }
 
+export interface DropMetadata {
+  projectId: string
+  network: Network
+  contractAddress: Address
+  name?: string
+  description?: string
+  image?: File
+  external_url?: string
+  animation_url?: string
+  background_color?: string
+  properties?: any[]
+  attributes?: any[]
+}
+
 export interface GateCollection {
   contractAddress: Address
   imageUrl: string
