@@ -1,5 +1,5 @@
-import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk';
-import { Network as AlchemyNetwork } from 'alchemy-sdk';
+import { ChainOrRpc as ThirdwebNetwork } from '@thirdweb-dev/sdk'
+import { Network as AlchemyNetwork } from 'alchemy-sdk'
 
 export type Address = string
 

@@ -1,22 +1,22 @@
-import { parseFetchResponse } from '../index.js';
+import { parseFetchResponse } from '../index.js'
 import {
   Address,
   DropMetadata,
   Network,
-  UserProps,
-} from '../types.js';
+  UserProps
+} from '../types.js'
 
-export async function getDropMetadata({
+export async function getDropMetadata ({
   user,
   projectId,
   network,
   contractAddress,
-  dropId,
+  dropId
 }: {
-  user: UserProps,
-  projectId: string,
-  network: Network,
-  contractAddress: Address,
+  user: UserProps
+  projectId: string
+  network: Network
+  contractAddress: Address
   dropId: number
 }): Promise<DropMetadata | undefined> {
   try {
@@ -33,7 +33,7 @@ export async function getDropMetadata({
   }
 }
 
-export async function postDropMetadata(user: UserProps, dropMetadata: DropMetadata): Promise<DropMetadata | undefined> {
+export async function postDropMetadata (user: UserProps, dropMetadata: DropMetadata): Promise<DropMetadata | undefined> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/nfts`, {
       method: 'POST',
