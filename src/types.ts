@@ -25,11 +25,18 @@ export type BlockHash = string
 
 export interface Claim {
   projectId: string
-  claimId: UUID
+  claimId: string
   network: Network
   contractAddress: Address
   tokenId?: string
-  claimedWalletAddress: Address
+  claimedWalletAddress?: Address
+}
+
+export interface ClaimRequest {
+  projectId: string
+  claimId: string
+  network: Network
+  walletAddress: Address
 }
 
 export interface Contract {
