@@ -11,21 +11,16 @@ export async function getDropMetadata ({
   projectId,
   network,
   contractAddress,
-  dropId
+  id
 }: {
   user: UserProps
   projectId: string
   network: Network
   contractAddress: Address
-  dropId: number
+  id: number
 }): Promise<DropMetadata | undefined> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/nfts/${projectId}?network=${network}&contractAddress=${contractAddress}&dropId=${dropId}`, {
-      headers: {
-        'x-api-key': user.apikey,
-        'x-user-id': user.email
-      }
-    })
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/nfts/${projectId}?network=${network}&contractAddress=${contractAddress}&id=${id}`)
     return await parseFetchResponse(response)
   } catch (err) {
     console.error(`Error occurred when trying to GET /nfts/${projectId}`)

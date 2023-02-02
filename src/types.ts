@@ -55,7 +55,7 @@ export interface DropMetadata {
   projectId: string
   network: Network
   contractAddress: Address
-  dropId: number
+  id: number
   name?: string
   description?: string
   image?: string | File
