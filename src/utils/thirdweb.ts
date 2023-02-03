@@ -1,4 +1,5 @@
 import { ThirdwebSDK } from '@thirdweb-dev/sdk'
+import { ThirdwebStorage } from '@thirdweb-dev/storage'
 import {
   NETWORK_MAP,
   TESTNET_NETWORKS
@@ -6,6 +7,7 @@ import {
 import { Network } from '../types.js'
 
 const thirdwebSingletons: Partial<Record<Network, ThirdwebSDK>> = {}
+let thirdwebStorageSingletonObject: ThirdwebStorage
 
 export const thirdwebSingleton = (network: Network): ThirdwebSDK => {
   if (!TESTNET_NETWORKS.includes(network)) {
@@ -18,4 +20,11 @@ export const thirdwebSingleton = (network: Network): ThirdwebSDK => {
     )
   }
   return thirdwebSingletons[network]!
+}
+
+export const thirdwebStorageSingleton = (): ThirdwebStorage => {
+  if (thirdwebStorageSingletonObject === undefined) {
+    thirdwebStorageSingletonObject = new ThirdwebStorage()
+  }
+  return thirdwebStorageSingletonObject
 }

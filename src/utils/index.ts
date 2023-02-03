@@ -6,7 +6,8 @@ import {
   Network,
   Transaction,
   TransactionHash,
-  TransactionStatus
+  TransactionStatus,
+  URL
 } from '../types.js'
 
 export * from './alchemy.js'
@@ -86,7 +87,7 @@ export function getDetailsPageLink ({
   network: Network
   address?: Address
   transactionHash?: TransactionHash
-}): string {
+}): URL {
   if (address !== undefined) {
     return `${NETWORK_MAP[network].scanUrl}/address/${address}`
   } else if (transactionHash !== undefined) {

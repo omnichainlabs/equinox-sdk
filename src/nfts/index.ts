@@ -2,6 +2,7 @@ import { parseFetchResponse } from '../index.js'
 import {
   DropMetadata,
   DropMetadataUrlParams,
+  URL,
   UserProps
 } from '../types.js'
 
@@ -10,7 +11,7 @@ export function getDropMetadataUrl ({
   network,
   contractAddress,
   id
-}: DropMetadataUrlParams): string {
+}: DropMetadataUrlParams): URL {
   return `${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/nfts/${projectId}/${network}/${contractAddress}/${id}`
 }
 
