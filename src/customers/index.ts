@@ -1,7 +1,9 @@
 import { parseFetchResponse } from '../index.js'
 import {
+  Address,
   Customer,
   Email,
+  Network,
   UserProps
 } from '../types.js'
 
@@ -24,14 +26,18 @@ export async function getAllCustomers (user: UserProps, projectId: string): Prom
 export async function getCustomer ({
   user,
   projectId,
-  customerId
+  customerEmail,
+  network,
+  walletAddress
 }: {
   user: UserProps
   projectId: string
-  customerId: Email
+  customerEmail: Email
+  network: Network
+  walletAddress: Address
 }): Promise<Customer | undefined> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/customers/${projectId}/${customerId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/customers?projectId=${projectId}&customerEmail=${customerEmail}&network=${network}&walletAddress=${walletAddress}`, {
       headers: {
         'x-api-key': user.apikey,
         'x-user-id': user.email
@@ -39,7 +45,7 @@ export async function getCustomer ({
     })
     return await parseFetchResponse(response)
   } catch (err) {
-    console.error(`Error occurred when trying to GET /customers/${projectId}/${customerId}`)
+    console.error('Error occurred when trying to GET /customers')
     console.error(err)
   }
 }

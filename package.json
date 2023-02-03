@@ -1,6 +1,6 @@
 {
   "name": "@equinoxapi/equinox-sdk",
-  "version": "0.0.69",
+  "version": "0.0.70",
   "description": "Public SDK for the Equinox API",
   "main": "dist/index.js",
   "type": "module",
