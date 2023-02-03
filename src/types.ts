@@ -60,9 +60,9 @@ export interface Customer {
 export interface DropMetadata extends DropMetadataUrlParams {
   name?: string
   description?: string
-  image?: string | File
-  external_url?: string
-  animation_url?: string
+  image?: URL
+  external_url?: URL
+  animation_url?: URL
   background_color?: string
   properties?: Record<string, unknown>
   attributes?: Record<string, unknown>
@@ -79,7 +79,7 @@ export type Email = string
 
 export interface GateCollection {
   contractAddress: Address
-  imageUrl: string
+  imageUrl: URL
   name: string
   openSeaSlug: string
 };
@@ -114,9 +114,9 @@ export enum Network {
 export interface NetworkInfo {
   alchemyApiKey?: string
   alchemyNetwork?: AlchemyNetwork
-  scanApiUrl: string
+  scanApiUrl: URL
   scanApiKey: string
-  scanUrl: string
+  scanUrl: URL
   scanName: string
   thirdwebNetwork?: ThirdwebNetwork
 }
@@ -222,11 +222,13 @@ export enum TransactionStatus {
   Success = 1,
 }
 
+export type URL = string
+
 export interface UserProps {
   name: string
-  email: string
-  avatar: string
-  thumb: string
+  email: Email
+  avatar: URL
+  thumb: URL
   role: string
   apikey: string
 }
