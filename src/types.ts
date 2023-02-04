@@ -12,13 +12,13 @@ export interface Apikey {
   totalTimeElapsed: number
 }
 
-export interface ApikeyResponse extends Apikey {
-  apikey: UUID
-}
-
 export interface ApikeyRequest {
   label: string
   expiration: ISOString
+}
+
+export interface ApikeyResponse extends Apikey {
+  apikey: UUID
 }
 
 export type BlockHash = string
@@ -74,6 +74,14 @@ export interface DropMetadataUrlParams {
 }
 
 export type Email = string
+
+export interface EmailResponse {
+  response: string
+}
+
+export enum EmailTemplate {
+  Airdrop = 'Airdrop'
+}
 
 export interface GateCollection {
   contractAddress: Address

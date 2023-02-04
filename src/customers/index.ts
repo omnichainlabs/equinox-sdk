@@ -3,6 +3,8 @@ import {
   Address,
   Customer,
   Email,
+  EmailResponse,
+  EmailTemplate,
   Network,
   UserProps
 } from '../types.js'
@@ -84,6 +86,36 @@ export async function postCustomer (user: UserProps, customer: Customer): Promis
     return await parseFetchResponse(response)
   } catch (err) {
     console.error('Error occurred when trying to POST /customers')
+    console.error(err)
+  }
+}
+
+export async function postCustomerEmail ({
+  user,
+  customer,
+  emailTemplate
+}: {
+  user: UserProps
+  customer: Customer
+  emailTemplate: EmailTemplate
+}): Promise<EmailResponse | undefined> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/customers/email`, {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify({
+        ...customer,
+        emailTemplate
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': user.apikey,
+        'x-user-id': user.email
+      }
+    })
+    return await parseFetchResponse(response)
+  } catch (err) {
+    console.error('Error occurred when trying to POST /customers/email')
     console.error(err)
   }
 }
