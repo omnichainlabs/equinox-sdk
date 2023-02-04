@@ -51,8 +51,11 @@ export interface ContractResponse extends Contract {
   transactionHash?: TransactionHash
 }
 
-export interface Customer extends Wallet {
-  customerEmail: Email
+export interface Customer {
+  projectId: string
+  customerEmail?: Email
+  network?: Network
+  walletAddress?: Address
 }
 
 export interface DropMetadata extends DropMetadataUrlParams {

@@ -1,11 +1,8 @@
 import { parseFetchResponse } from '../index.js'
 import {
-  Address,
   Customer,
-  Email,
   EmailResponse,
   EmailTemplate,
-  Network,
   UserProps
 } from '../types.js'
 
@@ -23,33 +20,6 @@ export async function getAllCustomers (user: UserProps, projectId: string): Prom
     console.error(err)
   }
   return []
-}
-
-export async function getCustomer ({
-  user,
-  projectId,
-  customerEmail,
-  network,
-  walletAddress
-}: {
-  user: UserProps
-  projectId: string
-  customerEmail: Email
-  network: Network
-  walletAddress: Address
-}): Promise<Customer | undefined> {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/customers?projectId=${projectId}&customerEmail=${customerEmail}&network=${network}&walletAddress=${walletAddress}`, {
-      headers: {
-        'x-api-key': user.apikey,
-        'x-user-id': user.email
-      }
-    })
-    return await parseFetchResponse(response)
-  } catch (err) {
-    console.error('Error occurred when trying to GET /customers')
-    console.error(err)
-  }
 }
 
 export async function deleteCustomer (user: UserProps, customer: Customer): Promise<void> {
@@ -100,6 +70,10 @@ export async function postCustomerEmail ({
   emailTemplate: EmailTemplate
 }): Promise<EmailResponse | undefined> {
   try {
+    if (customer.customerEmail === undefined) {
+      return
+    }
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_BEANSTALK_SERVER_URL}/customers/email`, {
       method: 'POST',
       mode: 'cors',
