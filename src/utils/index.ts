@@ -11,6 +11,7 @@ import {
 } from '../types.js'
 
 export * from './alchemy.js'
+export * from './nodemailer.js'
 export * from './thirdweb.js'
 
 export const S_PER_DAY: number = 24 * 60 * 60

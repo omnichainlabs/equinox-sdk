@@ -12,12 +12,11 @@ export const alchemySingleton = (network: Network): Alchemy => {
   if (!TESTNET_NETWORKS.includes(network)) {
     throw new Error('Currently, only testnet networks are supported.')
   }
-  const alchemySettings = {
-    apiKey: NETWORK_MAP[network].alchemyApiKey,
-    network: NETWORK_MAP[network].alchemyNetwork
-  }
   if (alchemySingletons[network] === undefined) {
-    alchemySingletons[network] = new Alchemy(alchemySettings)
+    alchemySingletons[network] = new Alchemy({
+      apiKey: NETWORK_MAP[network].alchemyApiKey,
+      network: NETWORK_MAP[network].alchemyNetwork
+    })
   }
   return alchemySingletons[network]!
 }

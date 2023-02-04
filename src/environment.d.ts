@@ -17,6 +17,8 @@ namespace NodeJS {
     NEXT_PUBLIC_SCAN_FUJI_KEY: string;
     NEXT_PUBLIC_SCAN_OPTIMISM_KEY: string;
     NEXT_PUBLIC_SCAN_OPTIMISM_GOERLI_KEY: string;
+    NODEMAILER_USER: string;
+    NODEMAILER_PASS: string;
     THIRDWEB_PRIVATE_KEY: string;
     THIRDWEB_WALLET_ADDRESS: string;
   }
